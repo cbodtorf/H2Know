@@ -39,7 +39,7 @@ public class H2KnowRestController {
         return user;
     }
 
-    @RequestMapping(path = "/#manager", method = RequestMethod.GET)
+    @RequestMapping(path = "/manager", method = RequestMethod.GET)
     public Iterable<Plant> listOfAllPlants (HttpSession session, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         User user = users.findFirstByUsername(username);
@@ -49,7 +49,7 @@ public class H2KnowRestController {
         }
         return plants.findAll();
     }
-    @RequestMapping(path = "/#manger", method = RequestMethod.POST)
+    @RequestMapping(path = "/manger", method = RequestMethod.POST)
     public User addPlant(HttpSession session, Integer id) throws Exception {
 
         String username = (String) session.getAttribute("username");

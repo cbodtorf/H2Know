@@ -27,7 +27,7 @@ let PlantModel = require('./plant');
 
 module.exports = Backbone.Collection.extend({
 
-    url     : 'http://localhost:8080/#manager',
+    url     : 'http://localhost:8080/manager',
     model   : PlantModel,
 
 })
@@ -41,13 +41,14 @@ module.exports = Backbone.Collection.extend({
 
 module.exports = Backbone.Model.extend({
 
-    url: 'http://localhost:8080/#manager',
+    url: 'http://localhost:8080/manager',
 
     defaults: {
       plantName         : '',
-      plantSpecies      : '',
-      lastWateredOn     : 0,
-      wateringFrequency : 0,
+      species      : '',
+      lastWateredOn     : {},
+      wateringInterval : 0,
+      nextWateringDate: {},
     },
 
 })
@@ -153,9 +154,9 @@ module.exports = Backbone.Router.extend({
       let self = this.manager;
 
       plantList.fetch({
-        url: 'http://localhost:8080/#manager',
+        url: 'http://localhost:8080/manager',
         success() {
-          console.log('grabbing plants');
+          console.log('grabbing plants', plantList);
           self.render(plantList.models);
         },
         error(err) {
@@ -364,7 +365,7 @@ let tmpl = require('../templates');
 
 module.exports = Backbone.View.extend({
 
-    url: 'http://localhost:8080/#manager',
+    url: 'http://localhost:8080/manager',
 
     initialize() {
     },
@@ -381,16 +382,16 @@ module.exports = Backbone.View.extend({
       // clear and render login to #main
       this.el.innerHtml = '';
       let mgr = document.createElement('DIV');
-      let ul = document.getElementById('plant-list')
       mgr.innerHTML = tmpl.manager;
       this.el.appendChild(mgr);
+      let ul = document.getElementById('plant-list')
 
       data.forEach(function(e,i) {
 
         if (i < 10) {
           let node = document.createElement('LI');
           node.innerHTML = `
-            ${e.plantName} <span>+</span>
+            ${e.attributes.plantName} <span>+</span>
         `;
 
         ul.appendChild(node);

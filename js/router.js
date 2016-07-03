@@ -64,9 +64,9 @@ module.exports = Backbone.Router.extend({
       let self = this.manager;
 
       plantList.fetch({
-        url: 'http://localhost:8080/#manager',
+        url: 'http://localhost:8080/manager',
         success() {
-          console.log('grabbing plants');
+          console.log('grabbing plants', plantList);
           self.render(plantList.models);
         },
         error(err) {
