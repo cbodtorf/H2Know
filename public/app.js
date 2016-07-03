@@ -74,10 +74,13 @@ module.exports = Backbone.Model.extend({
 
       this.save(null, {
           success() {
-            console.log('hopefully we saving!')
+            console.log('hopefully we saving!');
+            location.href = '#manager';
           },
           error() {
-            console.log('you suck try again');
+            let err = document.getElementById('password');
+            err.placeholder = 'wrong password';
+            console.log('you suck try again, wrong password');
           }
       });
     }
@@ -325,12 +328,13 @@ module.exports = Backbone.View.extend({
     login() {
       let un = document.getElementById('username');
       let pw = document.getElementById('password');
-      this.model.login(un.value, pw.value);
-      un.value = '';
-      pw.value = '';
-      if (this.model.get('username') === '' || this.model.get('password') === '') {
+      if (un.value === '' || pw.value === '') {
           un.placeholder = 'something\'s not right';
-      } else {location.href = '#manager';}
+      } else {
+        this.model.login(un.value, pw.value);
+        un.value = '';
+        pw.value = '';
+      }
     },
 
     render() {

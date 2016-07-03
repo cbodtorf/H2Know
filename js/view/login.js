@@ -20,12 +20,13 @@ module.exports = Backbone.View.extend({
     login() {
       let un = document.getElementById('username');
       let pw = document.getElementById('password');
-      this.model.login(un.value, pw.value);
-      un.value = '';
-      pw.value = '';
-      if (this.model.get('username') === '' || this.model.get('password') === '') {
+      if (un.value === '' || pw.value === '') {
           un.placeholder = 'something\'s not right';
-      } else {location.href = '#manager';}
+      } else {
+        this.model.login(un.value, pw.value);
+        un.value = '';
+        pw.value = '';
+      }
     },
 
     render() {
