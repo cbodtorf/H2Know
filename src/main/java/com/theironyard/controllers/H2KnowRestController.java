@@ -31,11 +31,12 @@ public class H2KnowRestController {
             users.save(user);
         }
         else if (!PasswordStorage.verifyPassword(user.getPassword(), userFromDatabase.getPassword())) {
-            throw new Exception("Wrong Password!");
+            throw new Exception("BAD PASS");
         }
         session.setAttribute("username", user.getUsername());
         return user;
     }
+
     @RequestMapping(path = "/#manager", method = RequestMethod.GET)
     public String home(HttpSession session, Integer id) throws Exception {
         plants.findAll();
