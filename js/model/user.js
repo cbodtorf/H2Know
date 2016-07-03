@@ -6,7 +6,7 @@
 
 module.exports = Backbone.Model.extend({
 
-    url: 'localhost:8080',
+    url: 'http://localhost:8080/login',
 
     defaults: {
       username      : '',
@@ -17,9 +17,12 @@ module.exports = Backbone.Model.extend({
       this.set('username', un);
       this.set('password', pw);
 
-      save(null, {
+      this.save(null, {
           success() {
             console.log('hopefully we saving!')
+          },
+          error() {
+            console.log('you suck try again');
           }
       });
     }
