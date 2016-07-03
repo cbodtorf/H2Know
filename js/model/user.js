@@ -19,10 +19,13 @@ module.exports = Backbone.Model.extend({
 
       this.save(null, {
           success() {
-            console.log('hopefully we saving!')
+            console.log('hopefully we saving!');
+            location.href = '#manager';
           },
           error() {
-            console.log('you suck try again');
+            let err = document.getElementById('password');
+            err.placeholder = 'wrong password';
+            console.log('you suck try again, wrong password');
           }
       });
     }
