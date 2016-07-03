@@ -2,6 +2,7 @@ package com.theironyard.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by jonathandavidblack on 7/1/16.
@@ -43,10 +44,11 @@ public class Plant {
         this.gardener = gardener;
     }
 
-    public Plant(int id, String plantName, String species, int wateringInterval) {
+    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval) {
         this.id = id;
         this.plantName = plantName;
         this.species = species;
+        this.lastWateredOn = lastWateredOn;
         this.wateringInterval = wateringInterval;
     }
 
@@ -58,6 +60,23 @@ public class Plant {
         this.wateringInterval = wateringInterval;
         this.nextWateringDate = nextWateringDate;
         this.gardener = gardener;
+    }
+
+    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate) {
+        this.id = id;
+        this.plantName = plantName;
+        this.species = species;
+        this.lastWateredOn = lastWateredOn;
+        this.wateringInterval = wateringInterval;
+        this.nextWateringDate = nextWateringDate;
+    }
+
+    public Plant(String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate) {
+        this.plantName = plantName;
+        this.species = species;
+        this.lastWateredOn = lastWateredOn;
+        this.wateringInterval = wateringInterval;
+        this.nextWateringDate = nextWateringDate;
     }
 
     public int getId() {
@@ -107,7 +126,6 @@ public class Plant {
     public void setNextWateringDate(LocalDateTime nextWateringDate) {
         this.nextWateringDate = nextWateringDate;
     }
-
     public User getGardener() {
         return gardener;
     }
