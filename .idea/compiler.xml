@@ -19,7 +19,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="H2Know_main" target="1.8" />
       <module name="h2know_main" target="1.8" />
+      <module name="H2Know_test" target="1.8" />
       <module name="h2know_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
