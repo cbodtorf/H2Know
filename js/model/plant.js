@@ -6,7 +6,7 @@
 
 module.exports = Backbone.Model.extend({
 
-    url: '',
+    url: 'http://localhost:8080/#manager',
 
     defaults: {
       plantName         : '',

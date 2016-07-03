@@ -27,7 +27,7 @@ let PlantModel = require('./plant');
 
 module.exports = Backbone.Collection.extend({
 
-    url     : '',
+    url     : 'http://localhost:8080/#manager',
     model   : PlantModel,
 
 })
@@ -41,7 +41,7 @@ module.exports = Backbone.Collection.extend({
 
 module.exports = Backbone.Model.extend({
 
-    url: '',
+    url: 'http://localhost:8080/#manager',
 
     defaults: {
       plantName         : '',
@@ -107,6 +107,7 @@ module.exports = Backbone.Router.extend({
 
   initialize() {
       let userM = new UserModel();
+      let plantM = new PlantModel();
 
       this.login = new LoginView({
         model: userM,
@@ -114,6 +115,7 @@ module.exports = Backbone.Router.extend({
       });
 
       this.manager = new ManagerView({
+        model: plantM,
         el: document.getElementById('main'),
       });
 
@@ -145,7 +147,23 @@ module.exports = Backbone.Router.extend({
       this.login.el.innerHTML = '';
       this.layout.header.render();
       this.layout.footer.render();
-      this.manager.render();
+
+      let plantList = new PlantCollection();
+
+      let self = this.manager;
+
+      plantList.fetch({
+        url: 'http://localhost:8080/#manager',
+        success() {
+          console.log('grabbing plants');
+          self.render(plantList.models);
+        },
+        error(err) {
+          console.error('aint no plants to grab', err)
+        }
+
+      });
+
     },
 
     plant() {
@@ -171,22 +189,6 @@ module.exports = {
         <div class="manager">
             <ul id="plant-list">
                 <li>asparagus <span>+</span></li>
-                <li>avocado <span>+</span></li>
-                <li>jalapeño <span>+</span></li>
-                <li>tomato <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
             </ul>
         </div>
     `,
@@ -332,6 +334,7 @@ module.exports = Backbone.View.extend({
           un.placeholder = 'something\'s not right';
       } else {
         this.model.login(un.value, pw.value);
+        pw.placeholder = 'password';
         un.value = '';
         pw.value = '';
       }
@@ -361,6 +364,8 @@ let tmpl = require('../templates');
 
 module.exports = Backbone.View.extend({
 
+    url: 'http://localhost:8080/#manager',
+
     initialize() {
     },
 
@@ -372,13 +377,26 @@ module.exports = Backbone.View.extend({
 
     },
 
-    render() {
+    render(data) {
       // clear and render login to #main
       this.el.innerHtml = '';
       let mgr = document.createElement('DIV');
+      let ul = document.getElementById('plant-list')
       mgr.innerHTML = tmpl.manager;
       this.el.appendChild(mgr);
-    }
+
+      data.forEach(function(e,i) {
+
+        if (i < 10) {
+          let node = document.createElement('LI');
+          node.innerHTML = `
+            ${e.plantName} <span>+</span>
+        `;
+
+        ul.appendChild(node);
+      } else {return;}
+    })
+  }
  })
 
 },{"../templates":6,"./layout":9}],12:[function(require,module,exports){
