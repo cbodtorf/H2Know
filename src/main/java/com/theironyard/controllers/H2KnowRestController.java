@@ -36,8 +36,9 @@ public class H2KnowRestController {
         session.setAttribute("username", user.getUsername());
         return user;
     }
-    @RequestMapping(path = "/login", method = RequestMethod.GET)
+    @RequestMapping(path = "/#manager", method = RequestMethod.GET)
     public String home(HttpSession session, Integer id) throws Exception {
+        plants.findAll();
         String username = (String) session.getAttribute("username");
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
