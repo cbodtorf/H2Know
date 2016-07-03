@@ -29,9 +29,6 @@ public class Plant {
     @Column
     LocalDateTime nextWateringDate;
 
-    @ManyToMany(mappedBy="plantListByUser", cascade = CascadeType.ALL)
-    List<User> userList;
-
     @ManyToOne
     User gardener;
 
@@ -129,7 +126,6 @@ public class Plant {
     public void setNextWateringDate(LocalDateTime nextWateringDate) {
         this.nextWateringDate = nextWateringDate;
     }
-
     public User getGardener() {
         return gardener;
     }

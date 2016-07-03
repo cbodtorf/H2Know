@@ -19,9 +19,9 @@ public class User {
     @Column(nullable = false)
     String password;
 
-    @ManyToMany
-    @JoinTable(name = "user_plants",joinColumns={@JoinColumn(name="users_id")}, inverseJoinColumns={@JoinColumn(name="plantsts_id")})
-    List<Plant> plantListByUser;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_plants",joinColumns={@JoinColumn(name="users_id")}, inverseJoinColumns={@JoinColumn(name="plants_id")})
+    public List<Plant> plantListByUser;
 
     public User() {
     }
@@ -35,6 +35,14 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public List<Plant> getPlantListByUser() {
+        return plantListByUser;
+    }
+
+    public void setPlantListByUser(List<Plant> plantListByUser) {
+        this.plantListByUser = plantListByUser;
     }
 
     public int getId() {

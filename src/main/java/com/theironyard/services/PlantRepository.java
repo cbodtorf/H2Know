@@ -9,5 +9,4 @@ import java.util.List;
  * Created by jonathandavidblack on 7/1/16.
  */
 public interface PlantRepository extends CrudRepository<Plant, Integer> {
-    List<Plant> findAllByUser(int userId);
 }

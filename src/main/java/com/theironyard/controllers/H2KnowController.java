@@ -59,20 +59,6 @@ public class H2KnowController {
             }
         }
     }
-    //created with help from example in Alex's Sherpa project
-    @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String login(@RequestBody User user, HttpSession session, @PathVariable("id") int id) throws Exception {
-        User userFromDatabase = users.findFirstByName(user.getUsername());
-            if (userFromDatabase == null) {
-                user.setPassword(PasswordStorage.createHash(user.getPassword()));
-                users.save(user);
-            }
-            else if (!PasswordStorage.verifyPassword(user.getPassword(), user.getPassword())) {
-                throw new Exception("Wrong Password!");
-            }
-            session.setAttribute("username", user.getUsername());
-            return "";
-        }
 }
 
 
