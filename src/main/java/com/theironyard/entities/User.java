@@ -1,6 +1,7 @@
 package com.theironyard.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by jonathandavidblack on 7/1/16.
@@ -17,6 +18,10 @@ public class User {
 
     @Column(nullable = false)
     String password;
+
+    @ManyToMany
+    @JoinTable(name = "user_plants",joinColumns={@JoinColumn(name="users_id")}, inverseJoinColumns={@JoinColumn(name="plantsts_id")})
+    List<Plant> plantListByUser;
 
     public User() {
     }
