@@ -11,15 +11,11 @@ var Router = require('./router');
 
 window.addEventListener('load', function () {
 
-  var layout = new Layout({
-    el: document.getElementById('layout')
-  });
+    var router = new Router();
 
-  var router = new Router();
-
-  Backbone.history.start();
+    Backbone.history.start();
 });
-},{"./router":5,"./view/layout":7}],2:[function(require,module,exports){
+},{"./router":5,"./view/layout":9}],2:[function(require,module,exports){
 /*******************************
 * COLLECTION
 * (model:: plant
@@ -65,16 +61,22 @@ module.exports = Backbone.Model.extend({
 
 module.exports = Backbone.Model.extend({
 
-    url: '',
+    url: 'localhost:8080',
 
     defaults: {
-      username         : '',
+      username      : '',
       password      : '',
     },
 
     login(un,pw) {
       this.set('username', un);
       this.set('password', pw);
+
+      save(null, {
+          success() {
+            console.log('hopefully we saving!')
+          }
+      });
     }
 })
 
@@ -104,6 +106,14 @@ module.exports = Backbone.Router.extend({
         model: userM,
         el: document.getElementById('main'),
       });
+
+      this.manager = new ManagerView({
+        el: document.getElementById('main'),
+      });
+
+      this.layout = new LayoutView();
+
+
   },
 
 
@@ -119,11 +129,17 @@ module.exports = Backbone.Router.extend({
     ********************************/
 
     login() {
+      this.layout.header.el.innerHTML = '';
+      this.layout.footer.el.innerHTML = '';
+      this.manager.el.innerHTML = '';
       this.login.render();
     },
 
     manager() {
-
+      this.login.el.innerHTML = '';
+      this.layout.header.render();
+      this.layout.footer.render();
+      this.manager.render();
     },
 
     plant() {
@@ -131,7 +147,7 @@ module.exports = Backbone.Router.extend({
     }
 })
 
-},{"./model/plant":3,"./model/plant.collection":2,"./model/user":4,"./view/layout":7,"./view/login":8,"./view/manager":9,"./view/plant":10}],6:[function(require,module,exports){
+},{"./model/plant":3,"./model/plant.collection":2,"./model/user":4,"./view/layout":9,"./view/login":10,"./view/manager":11,"./view/plant":12}],6:[function(require,module,exports){
 /*******************************
 * TEMPLATES
 *
@@ -145,18 +161,113 @@ module.exports = {
             <button id="login" type="button">Login</button>
         </div>
     `,
-    manager: ``,
+    manager: `
+        <div class="manager">
+            <ul id="plant-list">
+                <li>asparagus <span>+</span></li>
+                <li>avocado <span>+</span></li>
+                <li>jalapeño <span>+</span></li>
+                <li>tomato <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+                <li>kale <span>+</span></li>
+            </ul>
+        </div>
+    `,
     plant: ``,
-    header: ``,
-    footer: ``,
+    header: `
+        <h1>H<sub>2</sub></h1><span>&#27700;n<h1>O</h1>w</span>
+    `,
+    footer: `
+      <h5>"dont be a plant murderer"</h5>
+      <span>&copy;2016 Black & Bodtorf</span>
+    `,
 }
 
 },{}],7:[function(require,module,exports){
 // modules
 
+let layoutView = require('./layout');
+let tmpl = require('../templates');
+
+/*******************************
+* FOOTER
+* ()::
+********************************/
+
+module.exports = Backbone.View.extend({
+
+    initialize() {
+    },
+
+    events: {
+
+    },
+
+    home() {
+
+    },
+
+    render() {
+      // clear and render login to #main
+      this.el.innerHtml = '';
+      let ftr = document.createElement('DIV');
+      ftr.innerHTML = tmpl.footer;
+      this.el.appendChild(ftr);
+    }
+ })
+
+},{"../templates":6,"./layout":9}],8:[function(require,module,exports){
+// modules
+
+let layoutView = require('./layout');
+let tmpl = require('../templates');
+
+/*******************************
+* HEADER
+* ()::
+********************************/
+
+module.exports = Backbone.View.extend({
+
+    initialize() {
+    },
+
+    events: {
+
+    },
+
+    home() {
+
+    },
+
+    render() {
+      // clear and render login to #main
+      this.el.innerHtml = '';
+      let hdr = document.createElement('NAV');
+      hdr.innerHTML = tmpl.header;
+      this.el.appendChild(hdr);
+    }
+ })
+
+},{"../templates":6,"./layout":9}],9:[function(require,module,exports){
+// modules
+
 let LoginView = require('./login');
 let PlantView = require('./plant');
 let ManagerView = require('./manager');
+let HeaderView = require('./header');
+let FooterView = require('./footer');
 
 /*******************************
 * LAYOUT
@@ -164,9 +275,17 @@ let ManagerView = require('./manager');
 ********************************/
 
 module.exports = Backbone.View.extend({
+    el: document.getElementById('layout'),
 
     initialize() {
-      
+
+      this.header = new HeaderView({
+        el: document.getElementById('header'),
+      });
+
+      this.footer = new FooterView({
+        el: document.getElementById('footer'),
+      });
 
     },
     events() {
@@ -180,7 +299,7 @@ module.exports = Backbone.View.extend({
 
 })
 
-},{"./login":8,"./manager":9,"./plant":10}],8:[function(require,module,exports){
+},{"./footer":7,"./header":8,"./login":10,"./manager":11,"./plant":12}],10:[function(require,module,exports){
 // modules
 
 let layoutView = require('./layout');
@@ -206,6 +325,9 @@ module.exports = Backbone.View.extend({
       this.model.login(un.value, pw.value);
       un.value = '';
       pw.value = '';
+      if (this.model.get('username') === '' || this.model.get('password') === '') {
+          un.placeholder = 'something\'s not right';
+      } else {location.href = '#manager';}
     },
 
     render() {
@@ -219,8 +341,39 @@ module.exports = Backbone.View.extend({
     }
  })
 
-},{"../templates":6,"./layout":7}],9:[function(require,module,exports){
+},{"../templates":6,"./layout":9}],11:[function(require,module,exports){
+// modules
 
-},{}],10:[function(require,module,exports){
-module.exports=require(9)
+let layoutView = require('./layout');
+let tmpl = require('../templates');
+
+/*******************************
+* MANAGER
+* (plantModel):: plant list. Additions. User gardern
+********************************/
+
+module.exports = Backbone.View.extend({
+
+    initialize() {
+    },
+
+    events: {
+        // 'click #login': 'login',
+    },
+
+    login() {
+
+    },
+
+    render() {
+      // clear and render login to #main
+      this.el.innerHtml = '';
+      let mgr = document.createElement('DIV');
+      mgr.innerHTML = tmpl.manager;
+      this.el.appendChild(mgr);
+    }
+ })
+
+},{"../templates":6,"./layout":9}],12:[function(require,module,exports){
+
 },{}]},{},[1])

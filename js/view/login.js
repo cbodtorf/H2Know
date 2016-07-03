@@ -23,6 +23,9 @@ module.exports = Backbone.View.extend({
       this.model.login(un.value, pw.value);
       un.value = '';
       pw.value = '';
+      if (this.model.get('username') === '' || this.model.get('password') === '') {
+          un.placeholder = 'something\'s not right';
+      } else {location.href = '#manager';}
     },
 
     render() {
