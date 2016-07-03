@@ -18,6 +18,7 @@ module.exports = Backbone.Router.extend({
 
   initialize() {
       let userM = new UserModel();
+      let plantM = new PlantModel();
 
       this.login = new LoginView({
         model: userM,
@@ -25,6 +26,7 @@ module.exports = Backbone.Router.extend({
       });
 
       this.manager = new ManagerView({
+        model: plantM,
         el: document.getElementById('main'),
       });
 
@@ -56,7 +58,23 @@ module.exports = Backbone.Router.extend({
       this.login.el.innerHTML = '';
       this.layout.header.render();
       this.layout.footer.render();
-      this.manager.render();
+
+      let plantList = new PlantCollection();
+
+      let self = this.manager;
+
+      plantList.fetch({
+        url: 'http://localhost:8080/manager',
+        success() {
+          console.log('grabbing plants', plantList);
+          self.render(plantList.models);
+        },
+        error(err) {
+          console.error('aint no plants to grab', err)
+        }
+
+      });
+
     },
 
     plant() {
