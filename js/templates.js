@@ -15,22 +15,6 @@ module.exports = {
         <div class="manager">
             <ul id="plant-list">
                 <li>asparagus <span>+</span></li>
-                <li>avocado <span>+</span></li>
-                <li>jalapeño <span>+</span></li>
-                <li>tomato <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
-                <li>kale <span>+</span></li>
             </ul>
         </div>
     `,

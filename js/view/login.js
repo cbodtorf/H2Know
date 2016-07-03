@@ -24,6 +24,7 @@ module.exports = Backbone.View.extend({
           un.placeholder = 'something\'s not right';
       } else {
         this.model.login(un.value, pw.value);
+        pw.placeholder = 'password';
         un.value = '';
         pw.value = '';
       }

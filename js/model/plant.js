@@ -6,13 +6,14 @@
 
 module.exports = Backbone.Model.extend({
 
-    url: '',
+    url: 'http://localhost:8080/manager',
 
     defaults: {
       plantName         : '',
-      plantSpecies      : '',
-      lastWateredOn     : 0,
-      wateringFrequency : 0,
+      species      : '',
+      lastWateredOn     : {},
+      wateringInterval : 0,
+      nextWateringDate: {},
     },
 
 })
