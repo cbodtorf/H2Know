@@ -91,12 +91,12 @@ public class H2KnowRestController {
     }
 
     @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.POST)
-    public Iterable<Plant> listOfPlantsToBeWatered(HttpSession session, @RequestBody User gardener) {
+    public Iterable<Plant> listOfPlantsToBeWatered(HttpSession session) {
 
         String username = (String) session.getAttribute("username");
         User user = users.findFirstByUsername(username);
 
-        Plant plant = plants.findOneByGardener(gardener);
+        Plant plant = plants.findOneByGardener(user);
         List<Plant> usersPlants = (List<Plant>) plants.findByUser(user);
         plant.setLastWateredOn(LocalDateTime.now());
         plant.setNextWateringDate(LocalDateTime.now().plusDays(plant.getWateringInterval()));
