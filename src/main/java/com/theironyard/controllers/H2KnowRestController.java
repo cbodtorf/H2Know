@@ -1,5 +1,6 @@
 package com.theironyard.controllers;
 
+import com.theironyard.entities.Plant;
 import com.theironyard.entities.User;
 import com.theironyard.services.PlantRepository;
 import com.theironyard.services.UserRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by jonathandavidblack on 7/1/16.
@@ -38,19 +40,29 @@ public class H2KnowRestController {
     }
 
     @RequestMapping(path = "/#manager", method = RequestMethod.GET)
-    public String home(HttpSession session, Integer id) throws Exception {
-        plants.findAll();
+    public Iterable<Plant> listOfAllPlants (HttpSession session, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
+        User user = users.findFirstByUsername(username);
+
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
         }
-        User loggedInUser = users.findOne(id);
-        loggedInUser.getPlantListByUser();
-        if (loggedInUser.plantListByUser.isEmpty()) {
-            return"Please Add a plant";
-        } else {
-            return "";
-        }
+        return plants.findAll();
     }
+    @RequestMapping(path = "/#manger", method = RequestMethod.POST)
+    public User addPlant(HttpSession session, Integer id) throws Exception {
 
+        String username = (String) session.getAttribute("username");
+        User user = users.findFirstByUsername(username);
+
+        if (username == null) {
+            throw new Exception("You Must be logged in to see this page");
+        }
+
+        Plant plantToAdd = plants.findOne(id);
+        user.getPlantListByUser().add(plantToAdd);
+        users.save(user);
+
+        return user;
+    }
 }

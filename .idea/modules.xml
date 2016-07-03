@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/h2know.iml" filepath="$PROJECT_DIR$/.idea/modules/h2know.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/h2know_main.iml" filepath="$PROJECT_DIR$/.idea/modules/h2know_main.iml" group="h2know" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/h2know_test.iml" filepath="$PROJECT_DIR$/.idea/modules/h2know_test.iml" group="h2know" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/H2Know.iml" filepath="$PROJECT_DIR$/.idea/modules/H2Know.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/H2Know_main.iml" filepath="$PROJECT_DIR$/.idea/modules/H2Know_main.iml" group="H2Know" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/H2Know_test.iml" filepath="$PROJECT_DIR$/.idea/modules/H2Know_test.iml" group="H2Know" />
     </modules>
   </component>
 </project>
