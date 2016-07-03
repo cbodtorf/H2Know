@@ -1,0 +1,39 @@
+/*******************************
+* _LOGIN
+* SCSS
+********************************/
+
+.login {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 5px 10px 0px rgba(0,0,0,0.5);
+  width: 90%;
+  max-width: 396px;
+  margin: 50px auto;
+  height: 300px;
+  background: skyblue;
+  background-image: url('http://cdn.decoist.com/wp-content/uploads/2014/05/Indoor-plants-decorate-a-bay-window.jpg');
+  background-size: 400px 300px;
+  border-radius: 10px;
+  input {
+    margin: 10px;
+    padding: 5px;
+    box-sizing: border-box;
+    width: 50%;
+    outline: none;
+    color: olivedrab;
+    border: none;
+    border-radius: 10px;
+  }
+  button {
+    margin: 10px;
+    background-color: olivedrab;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px 0px rgba(0,0,0,0.5);
+    width: 50%;
+    cursor: pointer;
+  }
+}
