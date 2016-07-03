@@ -1,0 +1,14 @@
+/*******************************
+* Import partials
+*
+********************************/
+body {
+  background:  linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('http://www.iflookscouldkill.co.uk/wp-content/uploads/2014/05/May-Wallpaper-1440x900.gif');
+  background-size: auto;
+}
+
+@import "footer";
+@import "header";
+@import "login";
+@import "manager";
+@import "plant";
