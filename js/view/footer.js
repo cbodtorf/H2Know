@@ -4,8 +4,8 @@ let layoutView = require('./layout');
 let tmpl = require('../templates');
 
 /*******************************
-* MANAGER
-* (plantModel):: plant list. Additions. User gardern
+* FOOTER
+* ()::
 ********************************/
 
 module.exports = Backbone.View.extend({
@@ -14,18 +14,18 @@ module.exports = Backbone.View.extend({
     },
 
     events: {
-        // 'click #login': 'login',
+
     },
 
-    login() {
+    home() {
 
     },
 
     render() {
       // clear and render login to #main
       this.el.innerHtml = '';
-      let mgr = document.createElement('DIV');
-      mgr.innerHTML = tmpl.manager;
-      this.el.appendChild(mgr);
+      let ftr = document.createElement('DIV');
+      ftr.innerHTML = tmpl.footer;
+      this.el.appendChild(ftr);
     }
  })

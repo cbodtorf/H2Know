@@ -23,6 +23,14 @@ module.exports = Backbone.Router.extend({
         model: userM,
         el: document.getElementById('main'),
       });
+
+      this.manager = new ManagerView({
+        el: document.getElementById('main'),
+      });
+
+      this.layout = new LayoutView();
+
+
   },
 
 
@@ -38,11 +46,17 @@ module.exports = Backbone.Router.extend({
     ********************************/
 
     login() {
+      this.layout.header.el.innerHTML = '';
+      this.layout.footer.el.innerHTML = '';
+      this.manager.el.innerHTML = '';
       this.login.render();
     },
 
     manager() {
-
+      this.login.el.innerHTML = '';
+      this.layout.header.render();
+      this.layout.footer.render();
+      this.manager.render();
     },
 
     plant() {

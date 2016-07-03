@@ -6,15 +6,21 @@
 
 module.exports = Backbone.Model.extend({
 
-    url: '',
+    url: 'localhost:8080',
 
     defaults: {
-      username         : '',
+      username      : '',
       password      : '',
     },
 
     login(un,pw) {
       this.set('username', un);
       this.set('password', pw);
+
+      save(null, {
+          success() {
+            console.log('hopefully we saving!')
+          }
+      });
     }
 })

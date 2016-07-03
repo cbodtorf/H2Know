@@ -10,11 +10,6 @@ let Router = require('./router');
 
 window.addEventListener('load', () => {
 
-
-    let layout = new Layout({
-      el: document.getElementById('layout'),
-    });
-
     let router = new Router();
 
     Backbone.history.start();

@@ -1,0 +1,25 @@
+/*******************************
+* _HEADER
+* SCSS
+********************************/
+
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  vertical-align: bottom;
+  background: rgba(107,142,35,1);
+  box-shadow: 0px -5px 10px 0px rgba(0,0,0,0.3);
+  color: white;
+  h5 {
+    text-align: center;
+    margin: 10px auto;
+  }
+  div {
+    width: 100%;
+  }
+  span {
+    display: block;
+    text-align: center;
+  }
+}
