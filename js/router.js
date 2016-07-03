@@ -59,21 +59,8 @@ module.exports = Backbone.Router.extend({
       this.layout.header.render();
       this.layout.footer.render();
 
-      let plantList = new PlantCollection();
-
-      let self = this.manager;
-
-      plantList.fetch({
-        url: 'http://localhost:8080/manager',
-        success() {
-          console.log('grabbing plants', plantList);
-          self.render(plantList.models);
-        },
-        error(err) {
-          console.error('aint no plants to grab', err)
-        }
-
-      });
+      // grabb from data base -> render()
+      this.manager.getPlantList();
 
     },
 

@@ -14,7 +14,6 @@ module.exports = {
     manager: `
         <div class="manager">
             <ul id="plant-list">
-                <li>asparagus <span>+</span></li>
             </ul>
         </div>
     `,
