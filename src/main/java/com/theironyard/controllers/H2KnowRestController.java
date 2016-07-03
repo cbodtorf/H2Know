@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -40,15 +41,15 @@ public class H2KnowRestController {
     }
 
     @RequestMapping(path = "/manager", method = RequestMethod.GET)
-    public Iterable<Plant> listOfAllPlants (HttpSession session, Integer id) throws Exception {
+    public Iterable<Plant> listOfAllPlants (HttpSession session) throws Exception {
         String username = (String) session.getAttribute("username");
-        User user = users.findFirstByUsername(username);
 
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
         }
         return plants.findAll();
     }
+
     @RequestMapping(path = "/manger", method = RequestMethod.POST)
     public User addPlant(HttpSession session, Integer id) throws Exception {
 
@@ -60,9 +61,49 @@ public class H2KnowRestController {
         }
 
         Plant plantToAdd = plants.findOne(id);
+        plantToAdd.setGardener(user);
         user.getPlantListByUser().add(plantToAdd);
         users.save(user);
 
         return user;
     }
+
+    @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.GET)
+    public Iterable<Plant> listOfUsersPlants(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        User user = users.findFirstByUsername(username);
+
+        Iterable<Plant> userPlantList = plants.findByUser(user);
+        return userPlantList;
+    }
+
+    @RequestMapping(path = "/manager", method = RequestMethod.DELETE)
+    public Iterable<Plant> listOfPlantsThatWerentDeleted(HttpSession session, Integer id) {
+        String username = (String) session.getAttribute("username");
+        User user = users.findFirstByUsername(username);
+
+        Plant plant = plants.findOne(id);
+        List<Plant> plantList = (List<Plant>) plants.findByUser(user);
+        plantList.remove(plant);
+        users.save(user);
+
+        return user.getPlantListByUser();
+    }
+
+    @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.POST)
+    public Iterable<Plant> listOfPlantsToBeWatered(HttpSession session, @RequestBody User gardener) {
+
+        String username = (String) session.getAttribute("username");
+        User user = users.findFirstByUsername(username);
+
+        Plant plant = plants.findOneByGardener(gardener);
+        List<Plant> usersPlants = (List<Plant>) plants.findByUser(user);
+        plant.setLastWateredOn(LocalDateTime.now());
+        plant.setNextWateringDate(LocalDateTime.now().plusDays(plant.getWateringInterval()));
+        usersPlants.add(plant);
+        users.save(user);
+
+        return usersPlants;
+    }
+
 }
