@@ -1,6 +1,7 @@
 package com.theironyard.controllers;
 
 import com.theironyard.entities.Plant;
+import com.theironyard.entities.PlantUserJoin;
 import com.theironyard.entities.User;
 import com.theironyard.services.PlantRepository;
 import com.theironyard.services.UserRepository;
