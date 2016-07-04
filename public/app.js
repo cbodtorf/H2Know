@@ -241,11 +241,15 @@ module.exports = Backbone.View.extend({
     },
 
     events: {
-
+      "click .user-plants--span": "userPlants",
     },
 
     home() {
 
+    },
+
+    userPlants() {
+      console.log("hellow");
     },
 
     render() {
