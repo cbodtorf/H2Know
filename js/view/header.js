@@ -24,8 +24,16 @@ module.exports = Backbone.View.extend({
     render() {
       // clear and render login to #main
       this.el.innerHtml = '';
+      let plantListHeader = document.createElement('SPAN');
+      plantListHeader.classList.add('user-plants--span');
+      plantListHeader.textContent = "- Your Plants -";
+
       let hdr = document.createElement('NAV');
+      let userPlants = document.createElement('DIV');
+      userPlants.classList.add('user-plants--header');
+      this.el.appendChild(userPlants);
       hdr.innerHTML = tmpl.header;
-      this.el.appendChild(hdr);
+      userPlants.appendChild(hdr);
+      this.el.appendChild(plantListHeader);
     }
  })
