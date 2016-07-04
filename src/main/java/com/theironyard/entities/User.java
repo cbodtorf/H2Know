@@ -19,7 +19,7 @@ public class User {
     @Column(nullable = false)
     String password;
 
-    @ManyToOne
+    @Transient
     public List<PlantUserJoin> plantListByUser;
 
     public User() {
