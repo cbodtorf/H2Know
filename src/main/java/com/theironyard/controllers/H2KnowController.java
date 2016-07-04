@@ -1,6 +1,7 @@
 package com.theironyard.controllers;
 
 import com.theironyard.entities.Plant;
+import com.theironyard.entities.PlantUserJoin;
 import com.theironyard.entities.User;
 import com.theironyard.services.PlantRepository;
 import com.theironyard.services.UserRepository;
@@ -36,6 +37,9 @@ public class H2KnowController {
 
     @Autowired
     PlantRepository plants;
+
+    @Autowired
+    PlantUserJoin pujr;
 
     @PostConstruct
     public void init() throws SQLException, FileNotFoundException {
