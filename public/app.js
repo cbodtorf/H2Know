@@ -381,7 +381,7 @@ module.exports = Backbone.View.extend({
     },
 
     addToUserList() {
-
+        //attach gardener id to plant
     },
 
 
@@ -400,7 +400,9 @@ module.exports = Backbone.View.extend({
             self.render(plantList.models);
           },
           error(err) {
-            console.error('aint no plants to grab', err)
+            console.error('aint no plants to grab', err);
+            location.href = '';
+            alert("couldn't find any plants.");
           }
 
         });

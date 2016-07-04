@@ -2,9 +2,6 @@
 * _MANAGER
 *
 ********************************/
-.hidden {
-  display: none !important;
-}
 
 .manager {
     overflow: hidden;
@@ -13,6 +10,7 @@
         padding: 0;
     }
     li {
+        cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;

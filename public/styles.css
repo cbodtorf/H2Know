@@ -111,15 +111,13 @@ nav {
 * _MANAGER
 *
 ********************************/
-.hidden {
-  display: none !important; }
-
 .manager {
   overflow: hidden; }
   .manager ul {
     list-style-type: none;
     padding: 0; }
   .manager li {
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
