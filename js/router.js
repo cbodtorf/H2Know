@@ -18,7 +18,6 @@ module.exports = Backbone.Router.extend({
 
   initialize() {
       let userM = new UserModel();
-      let plantM = new PlantModel();
 
       this.login = new LoginView({
         model: userM,
@@ -26,7 +25,6 @@ module.exports = Backbone.Router.extend({
       });
 
       this.manager = new ManagerView({
-        model: plantM,
         el: document.getElementById('main'),
       });
 

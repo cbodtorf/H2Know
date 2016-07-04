@@ -111,6 +111,9 @@ nav {
 * _MANAGER
 *
 ********************************/
+.hidden {
+  display: none !important; }
+
 .manager {
   overflow: hidden; }
   .manager ul {
@@ -129,3 +132,32 @@ nav {
     background: rgba(255, 255, 255, 0.5); }
     .manager li span {
       margin-right: 40px; }
+  .manager .li-drop-down {
+    width: 100%;
+    display: none; }
+  .manager .li-detail-wrap {
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 90%;
+    background: white;
+    overflow: hidden;
+    border: 2px solid black;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px; }
+    .manager .li-detail-wrap span {
+      padding-left: 20px; }
+    .manager .li-detail-wrap img {
+      width: 60px;
+      height: 50px; }
+    .manager .li-detail-wrap button {
+      width: 75%;
+      margin: 0 auto;
+      background-color: olivedrab;
+      color: white;
+      border-radius: 5px;
+      height: 25px;
+      margin-bottom: 4px; }
