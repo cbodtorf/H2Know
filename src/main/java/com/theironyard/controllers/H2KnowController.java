@@ -38,8 +38,6 @@ public class H2KnowController {
     @Autowired
     PlantRepository plants;
 
-    @Autowired
-    PlantUserJoin pujr;
 
     @PostConstruct
     public void init() throws SQLException, FileNotFoundException {
