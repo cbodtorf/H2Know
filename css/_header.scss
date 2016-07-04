@@ -4,11 +4,36 @@
 ********************************/
 
 header {
-  background: white;
+  // user plant list
+  background: olivedrab;
   box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
   position: fixed;
+  margin: 0 auto;
+  color: white;
   width: 100%;
-  top: 0;
+  transition: .5s ease;
+  top: 75px;
+  &:hover {
+    .user-plants--span {
+      margin-top: 38px;
+    }
+  }
+  div {
+    background: white;
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
+    position: fixed;
+    width: 100%;
+    top: 0;
+  }
+  span {
+    width: 100%;
+    margin-top: 32px;
+    display: block;
+    text-align: center;
+    transition: .5s ease;
+    position: static;
+    cursor: pointer;
+  }
 }
 
 nav {

@@ -108,7 +108,6 @@ module.exports = Backbone.Router.extend({
 
   initialize() {
       let userM = new UserModel();
-      let plantM = new PlantModel();
 
       this.login = new LoginView({
         model: userM,
@@ -116,7 +115,6 @@ module.exports = Backbone.Router.extend({
       });
 
       this.manager = new ManagerView({
-        model: plantM,
         el: document.getElementById('main'),
       });
 
@@ -149,21 +147,8 @@ module.exports = Backbone.Router.extend({
       this.layout.header.render();
       this.layout.footer.render();
 
-      let plantList = new PlantCollection();
-
-      let self = this.manager;
-
-      plantList.fetch({
-        url: 'http://localhost:8080/manager',
-        success() {
-          console.log('grabbing plants', plantList);
-          self.render(plantList.models);
-        },
-        error(err) {
-          console.error('aint no plants to grab', err)
-        }
-
-      });
+      // grabb from data base -> render()
+      this.manager.getPlantList();
 
     },
 
@@ -186,17 +171,20 @@ module.exports = {
             <button id="login" type="button">Login</button>
         </div>
     `,
+
     manager: `
         <div class="manager">
             <ul id="plant-list">
-                <li>asparagus <span>+</span></li>
             </ul>
         </div>
     `,
-    plant: ``,
+
+    plantAdd: ``,
+
     header: `
         <h1>H<sub>2</sub></h1><span>&#27700;n<h1>O</h1>w</span>
     `,
+
     footer: `
       <h5>"dont be a plant murderer"</h5>
       <span>&copy;2016 Black & Bodtorf</span>
@@ -253,19 +241,31 @@ module.exports = Backbone.View.extend({
     },
 
     events: {
-
+      "click .user-plants--span": "userPlants",
     },
 
     home() {
 
     },
 
+    userPlants() {
+      console.log("hellow");
+    },
+
     render() {
       // clear and render login to #main
       this.el.innerHtml = '';
+      let plantListHeader = document.createElement('SPAN');
+      plantListHeader.classList.add('user-plants--span');
+      plantListHeader.textContent = "- Your Plants -";
+
       let hdr = document.createElement('NAV');
+      let userPlants = document.createElement('DIV');
+      userPlants.classList.add('user-plants--header');
+      this.el.appendChild(userPlants);
       hdr.innerHTML = tmpl.header;
-      this.el.appendChild(hdr);
+      userPlants.appendChild(hdr);
+      this.el.appendChild(plantListHeader);
     }
  })
 
@@ -356,7 +356,9 @@ module.exports = Backbone.View.extend({
 // modules
 
 let layoutView = require('./layout');
+let PlantModel = require('../model/plant');
 let tmpl = require('../templates');
+let PlantCollection = require('../model/plant.collection');
 
 /*******************************
 * MANAGER
@@ -368,38 +370,98 @@ module.exports = Backbone.View.extend({
     url: 'http://localhost:8080/manager',
 
     initialize() {
+      this.plantList = new PlantCollection();
+      this.plantM = new PlantModel();
     },
 
+    model: this.plantM,
+
+
+    /*******************************
+    * Events
+    ********************************/
     events: {
-        // 'click #login': 'login',
+        'click li': 'dropDown',
+        'click #add-plant': 'addToUserList'
     },
 
-    login() {
+    dropDown() {
+        userPlant = event.target.nextSibling;
+        $(userPlant).slideToggle('slow', function(){
+        });
 
     },
+
+    addToUserList() {
+        //attach gardener id to plant
+    },
+
+
+    /*******************************
+    * Fetch and Render
+    ********************************/
+    getPlantList() {
+        // fetching from database
+        let self = this;
+        let plantList = self.plantList;
+
+        plantList.fetch({
+          url: 'http://localhost:8080/manager',
+          success() {
+            console.log('grabbing plants', plantList);
+            self.render(plantList.models);
+          },
+          error(err) {
+            console.error('aint no plants to grab', err);
+            location.href = '';
+            alert("couldn't find any plants.");
+          }
+
+        });
+    },
+
+
+
+
+
 
     render(data) {
-      // clear and render login to #main
-      this.el.innerHtml = '';
-      let mgr = document.createElement('DIV');
-      mgr.innerHTML = tmpl.manager;
-      this.el.appendChild(mgr);
-      let ul = document.getElementById('plant-list')
 
-      data.forEach(function(e,i) {
+        // clear and render login to #main
+        this.el.innerHtml = '';
+        let mgr = document.createElement('DIV');
+        mgr.innerHTML = tmpl.manager;
+        this.el.appendChild(mgr);
+        let ul = document.getElementById('plant-list');
 
-        if (i < 10) {
-          let node = document.createElement('LI');
-          node.innerHTML = `
-            ${e.attributes.plantName} <span>+</span>
-        `;
+        // insert each plant into add list for user to click
+        data.forEach(function(e,i) {
 
-        ul.appendChild(node);
-      } else {return;}
-    })
-  }
+          if (i < 10) {
+              let id = `${e.attributes.id}`;
+              let name = `${e.attributes.plantName}`
+              let node = document.createElement('LI');
+              let twinNode = document.createElement('DIV');
+              twinNode.classList.add('li-drop-down');
+
+              node.setAttribute('data-id', id);
+              node.innerHTML = `${name} <span>+</span>`;
+              twinNode.innerHTML = `
+                <div class="li-detail-wrap">
+                  <span>${e.attributes.species}</span>
+                  <span>every: ${e.attributes.wateringInterval} days</span>
+                  <img src="./assets/plant${id}.jpg" alt="${name}" />
+                  <button id='add-plant' type="button" name="add">add</button>
+                </div>
+              `;
+
+              ul.appendChild(node);
+              ul.appendChild(twinNode);
+          } else {return;}
+      })
+    }
  })
 
-},{"../templates":6,"./layout":9}],12:[function(require,module,exports){
+},{"../model/plant":3,"../model/plant.collection":2,"../templates":6,"./layout":9}],12:[function(require,module,exports){
 
 },{}]},{},[1])
