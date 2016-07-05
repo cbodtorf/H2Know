@@ -28,23 +28,23 @@ module.exports = Backbone.View.extend({
       let self = this;
 
       console.log(UserCollection)
-      // let userList = self.userList;
+      let userList = self.userList;
 
-      // plantList.fetch({
-      //   url: 'http://localhost:8080/manager/userPlantList',
-      //   success() {
-      //     console.log('grabbing plants', userList);
-      //     self.render(userList.models);
-      //   },
-      //   error(err) {
-      //     console.error('aint no plants to grab', err);
-      //     alert("couldn't find any plants.");
-      //   }
-      //
-      // });
+      userList.fetch({
+        url: 'http://localhost:8080/manager/userPlantList',
+        success() {
+          console.log('grabbing plants', userList);
+          self.render(userList.models);
+        },
+        error(err) {
+          console.error('aint no plants to grab', err);
+          alert("couldn't find any plants.");
+        }
+
+      });
     },
 
-    render() {
+    render(data) {
         // clear and render login to #main
         this.el.innerHtml = '';
         let mgr = document.createElement('DIV');
