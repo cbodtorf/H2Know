@@ -56,6 +56,7 @@ public class H2KnowRestController {
         }
         return plants.findAll();
     }
+
     //hit this route when adding a plant to a users plant list
     //creating a plantUserJoin object from the logged in user and the received plant's id
     @RequestMapping(path = "/manager", method = RequestMethod.POST)
