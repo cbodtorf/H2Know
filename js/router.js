@@ -3,10 +3,10 @@
 let PlantModel = require('./model/plant');
 let LayoutView = require('./view/layout');
 let LoginView = require('./view/login');
-let PlantView = require('./view/plant');
 let ManagerView = require('./view/manager');
 let PlantCollection = require('./model/plant.collection');
 let UserModel = require('./model/user');
+let UserPlantView = require('./view/user-plants')
 
 /*******************************
 * ROUTER
@@ -28,6 +28,10 @@ module.exports = Backbone.Router.extend({
         el: document.getElementById('main'),
       });
 
+      this.userView = new UserPlantView({
+        el: document.getElementById('main'),
+      })
+
       this.layout = new LayoutView();
 
 
@@ -37,7 +41,7 @@ module.exports = Backbone.Router.extend({
   routes: {
     ''        : 'login',
     'manager' : 'manager',
-    'plant'   : 'plant',
+    'user'   : 'user',
   },
 
 
@@ -53,6 +57,8 @@ module.exports = Backbone.Router.extend({
     },
 
     manager() {
+      this.layout.header.el.innerHTML = '';
+      this.layout.footer.el.innerHTML = '';
       this.login.el.innerHTML = '';
       this.layout.header.render();
       this.layout.footer.render();
@@ -62,7 +68,16 @@ module.exports = Backbone.Router.extend({
 
     },
 
-    plant() {
+    user() {
+      this.layout.header.el.innerHTML = '';
+      this.layout.footer.el.innerHTML = '';
+      this.manager.el.innerHTML = '';
+
+      this.layout.header.render();
+      this.layout.footer.render();
+      $('.user-plants--span').html('- Add Plants -');
+
+      this.userView.getUserPlantList();
 
     }
 })
