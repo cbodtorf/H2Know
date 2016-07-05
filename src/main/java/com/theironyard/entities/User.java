@@ -1,6 +1,8 @@
 package com.theironyard.entities;
 
 import javax.persistence.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +21,7 @@ public class User {
     @Column(nullable = false)
     String password;
 
-    @Transient
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     public List<PlantUserJoin> plantListByUser;
 
     public User() {

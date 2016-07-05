@@ -19,10 +19,11 @@ public class PlantUserJoin {
 
     public LocalDateTime lastWateredOn;
 
+    @JsonIgnore
     @ManyToOne(cascade = javax.persistence.CascadeType.REMOVE)
     private  User user;
 
-    @JsonIgnore
+
     @ManyToOne
     public Plant plant;
 
