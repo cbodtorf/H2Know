@@ -15,7 +15,7 @@ window.addEventListener('load', function () {
 
     Backbone.history.start();
 });
-},{"./router":5,"./view/layout":9}],2:[function(require,module,exports){
+},{"./router":6,"./view/layout":10}],2:[function(require,module,exports){
 /*******************************
 * COLLECTION
 * (model:: plant
@@ -51,9 +51,27 @@ module.exports = Backbone.Model.extend({
       nextWateringDate: {},
     },
 
+
 })
 
 },{}],4:[function(require,module,exports){
+/*******************************
+* COLLECTION (user's plant list)
+* (model):: user's
+* (role):: fetch plant data from server
+********************************/
+
+let PlantModel = require('./plant');
+
+
+module.exports = Backbone.Collection.extend({
+
+    url     : 'http://localhost:8080/manager',
+    model   : PlantModel,
+
+})
+
+},{"./plant":3}],5:[function(require,module,exports){
 /*******************************
 * MODEL
 * (user):: to keep track of username and password
@@ -87,7 +105,7 @@ module.exports = Backbone.Model.extend({
     }
 })
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // modules
 
 let PlantModel = require('./model/plant');
@@ -157,7 +175,7 @@ module.exports = Backbone.Router.extend({
     }
 })
 
-},{"./model/plant":3,"./model/plant.collection":2,"./model/user":4,"./view/layout":9,"./view/login":10,"./view/manager":11,"./view/plant":12}],6:[function(require,module,exports){
+},{"./model/plant":3,"./model/plant.collection":2,"./model/user":5,"./view/layout":10,"./view/login":11,"./view/manager":12,"./view/plant":13}],7:[function(require,module,exports){
 /*******************************
 * TEMPLATES
 *
@@ -191,7 +209,7 @@ module.exports = {
     `,
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // modules
 
 let layoutView = require('./layout');
@@ -224,7 +242,7 @@ module.exports = Backbone.View.extend({
     }
  })
 
-},{"../templates":6,"./layout":9}],8:[function(require,module,exports){
+},{"../templates":7,"./layout":10}],9:[function(require,module,exports){
 // modules
 
 let layoutView = require('./layout');
@@ -269,7 +287,7 @@ module.exports = Backbone.View.extend({
     }
  })
 
-},{"../templates":6,"./layout":9}],9:[function(require,module,exports){
+},{"../templates":7,"./layout":10}],10:[function(require,module,exports){
 // modules
 
 let LoginView = require('./login');
@@ -308,7 +326,7 @@ module.exports = Backbone.View.extend({
 
 })
 
-},{"./footer":7,"./header":8,"./login":10,"./manager":11,"./plant":12}],10:[function(require,module,exports){
+},{"./footer":8,"./header":9,"./login":11,"./manager":12,"./plant":13}],11:[function(require,module,exports){
 // modules
 
 let layoutView = require('./layout');
@@ -352,16 +370,17 @@ module.exports = Backbone.View.extend({
     }
  })
 
-},{"../templates":6,"./layout":9}],11:[function(require,module,exports){
+},{"../templates":7,"./layout":10}],12:[function(require,module,exports){
 // modules
 
 let layoutView = require('./layout');
 let PlantModel = require('../model/plant');
 let tmpl = require('../templates');
 let PlantCollection = require('../model/plant.collection');
+let UserCollection = require('../model/user.collection');
 
 /*******************************
-* MANAGER
+* MANAGER VIEW
 * (plantModel):: plant list. Additions. User gardern
 ********************************/
 
@@ -371,6 +390,7 @@ module.exports = Backbone.View.extend({
 
     initialize() {
       this.plantList = new PlantCollection();
+      this.userList = new UserCollection();
       this.plantM = new PlantModel();
     },
 
@@ -394,6 +414,28 @@ module.exports = Backbone.View.extend({
 
     addToUserList() {
         //attach gardener id to plant
+        let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
+        let plantObj = this.plantList.get(plantId);
+        if (!this.userList._byId.hasOwnProperty(plantId)) {
+          this.userList.push(plantObj);
+
+          //method 1
+          Backbone.sync("create", plantObj);
+
+          // method 2
+
+          // $.ajax({
+          //       url:'http://localhost:8080/manager',
+          //       method:'POST',
+          //       data: {id: 1},
+          //       success:function(){
+          //           console.log('wow');
+          //       },
+          //       failure:function(){
+          //           console.log('shit');
+          //       },
+          //     });
+        }
     },
 
 
@@ -437,7 +479,7 @@ module.exports = Backbone.View.extend({
         // insert each plant into add list for user to click
         data.forEach(function(e,i) {
 
-          if (i < 10) {
+          if (i < 20) {
               let id = `${e.attributes.id}`;
               let name = `${e.attributes.plantName}`
               let node = document.createElement('LI');
@@ -462,6 +504,6 @@ module.exports = Backbone.View.extend({
     }
  })
 
-},{"../model/plant":3,"../model/plant.collection":2,"../templates":6,"./layout":9}],12:[function(require,module,exports){
+},{"../model/plant":3,"../model/plant.collection":2,"../model/user.collection":4,"../templates":7,"./layout":10}],13:[function(require,module,exports){
 
 },{}]},{},[1])
