@@ -49,13 +49,24 @@ module.exports = Backbone.View.extend({
         //remove user plant join
         let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
         let plantObj = this.userList.get(plantId);
-        plantObj.destroy();
-        this.getUserPlantList();
+        
+        plantObj.destroy({
+          url: 'http://localhost:8080/manager/userPlantList',
+          success() {
+            console.log('deleting plant');
+            this.getUserPlantList();
+          },
+          error(err) {
+            console.error("sumthin's wrong: this is what I tried to sent", err);
+            alert("i wrote this alert to be annoying because the delete doesn't work.")
+          }
+        });
+
     },
 
     render(data) {
         // clear and render login to #main
-        this.el.innerHtml = '';
+        this.el.innerHTML = '';
         let mgr = document.createElement('DIV');
         mgr.innerHTML = tmpl.manager;
         this.el.appendChild(mgr);
