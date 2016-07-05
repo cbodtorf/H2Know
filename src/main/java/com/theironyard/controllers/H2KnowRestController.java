@@ -64,11 +64,15 @@ public class H2KnowRestController {
 
         String username = (String) session.getAttribute("username");
         User user = users.findFirstByUsername(username);
-        int id = plant.getId();
+
+        plant.setGardener(user);
+        plant.setLastWateredOn(LocalDateTime.now());
+        plant.setNextWateringDate(LocalDateTime.now().plusDays(plant.getWateringInterval()));
+        Plant plantToAdd = plants.findOne(plant.getId());
+
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
         }
-        Plant plantToAdd = plants.findOne(id);
         PlantUserJoin plantJoin = new PlantUserJoin(user, plantToAdd);
         List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
         plantListThatWasAddedTo.add(plantJoin);
