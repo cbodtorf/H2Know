@@ -60,15 +60,17 @@ public class H2KnowRestController {
     //hit this route when adding a plant to a users plant list
     //creating a plantUserJoin object from the logged in user and the received plant's id
     @RequestMapping(path = "/manager", method = RequestMethod.POST)
-    public User addPlant(HttpSession session, Integer id, @RequestBody Plant plant) throws Exception {
+    public User addPlant(HttpSession session, @RequestBody Plant plant) throws Exception {
 
         String username = (String) session.getAttribute("username");
         User user = users.findFirstByUsername(username);
-
+        plant.setGardener(user);
+        plant.setLastWateredOn(LocalDateTime.now());
+        plant.setNextWateringDate(LocalDateTime.now().plusDays(plant.getWateringInterval()));
+        Plant plantToAdd = plants.findOne(plant.getId());
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
         }
-        Plant plantToAdd = plants.findOne(id);
         PlantUserJoin plantJoin = new PlantUserJoin(user, plantToAdd);
         List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
         plantListThatWasAddedTo.add(plantJoin);

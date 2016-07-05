@@ -62,6 +62,7 @@ public class Plant {
         this.gardener = gardener;
     }
 
+
     public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate) {
         this.id = id;
         this.plantName = plantName;
