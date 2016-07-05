@@ -56,9 +56,10 @@ public class H2KnowRestController {
         }
         return plants.findAll();
     }
-
-    @RequestMapping(path = "/manger", method = RequestMethod.POST)
-    public User addPlant(HttpSession session, Integer id) throws Exception {
+    //hit this route when adding a plant to a users plant list
+    //creating a plantUserJoin object from the logged in user and the received plant's id
+    @RequestMapping(path = "/manager", method = RequestMethod.POST)
+    public User addPlant(HttpSession session, Integer id, @RequestBody Plant plant) throws Exception {
 
         String username = (String) session.getAttribute("username");
         User user = users.findFirstByUsername(username);
@@ -68,8 +69,8 @@ public class H2KnowRestController {
         }
         Plant plantToAdd = plants.findOne(id);
         PlantUserJoin plantJoin = new PlantUserJoin(user, plantToAdd);
-        plantToAdd.setGardener(user);
-        user.getPlantListByUser().add(plantJoin);
+        List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
+        plantListThatWasAddedTo.add(plantJoin);
         users.save(user);
 
         return user;
