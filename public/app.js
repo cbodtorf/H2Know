@@ -66,7 +66,7 @@ let PlantModel = require('./plant');
 
 module.exports = Backbone.Collection.extend({
 
-    url     : 'http://localhost:8080/manager',
+    url     : 'http://localhost:8080/manager/userPlantList',
     model   : PlantModel,
 
 })
@@ -111,10 +111,10 @@ module.exports = Backbone.Model.extend({
 let PlantModel = require('./model/plant');
 let LayoutView = require('./view/layout');
 let LoginView = require('./view/login');
-let PlantView = require('./view/plant');
 let ManagerView = require('./view/manager');
 let PlantCollection = require('./model/plant.collection');
 let UserModel = require('./model/user');
+let UserPlantView = require('./view/user-plants')
 
 /*******************************
 * ROUTER
@@ -136,6 +136,10 @@ module.exports = Backbone.Router.extend({
         el: document.getElementById('main'),
       });
 
+      this.userView = new UserPlantView({
+        el: document.getElementById('main'),
+      })
+
       this.layout = new LayoutView();
 
 
@@ -145,7 +149,7 @@ module.exports = Backbone.Router.extend({
   routes: {
     ''        : 'login',
     'manager' : 'manager',
-    'plant'   : 'plant',
+    'user'   : 'user',
   },
 
 
@@ -161,6 +165,8 @@ module.exports = Backbone.Router.extend({
     },
 
     manager() {
+      this.layout.header.el.innerHTML = '';
+      this.layout.footer.el.innerHTML = '';
       this.login.el.innerHTML = '';
       this.layout.header.render();
       this.layout.footer.render();
@@ -170,12 +176,21 @@ module.exports = Backbone.Router.extend({
 
     },
 
-    plant() {
+    user() {
+      this.layout.header.el.innerHTML = '';
+      this.layout.footer.el.innerHTML = '';
+      this.manager.el.innerHTML = '';
+
+      this.layout.header.render();
+      this.layout.footer.render();
+      $('.user-plants--span').html('- Add Plants -');
+
+      this.userView.getUserPlantList();
 
     }
 })
 
-},{"./model/plant":3,"./model/plant.collection":2,"./model/user":5,"./view/layout":10,"./view/login":11,"./view/manager":12,"./view/plant":13}],7:[function(require,module,exports){
+},{"./model/plant":3,"./model/plant.collection":2,"./model/user":5,"./view/layout":10,"./view/login":11,"./view/manager":12,"./view/user-plants":13}],7:[function(require,module,exports){
 /*******************************
 * TEMPLATES
 *
@@ -260,14 +275,20 @@ module.exports = Backbone.View.extend({
 
     events: {
       "click .user-plants--span": "userPlants",
+      "click nav"               : "home",
     },
 
     home() {
-
+      console.log('home');
+      location.href = "#manager";
     },
 
     userPlants() {
-      console.log("hellow");
+      if (location.href === "http://localhost:8080/#user") {
+        location.href = '#manager';
+      } else {
+        location.href = "#user"
+      }
     },
 
     render() {
@@ -291,7 +312,6 @@ module.exports = Backbone.View.extend({
 // modules
 
 let LoginView = require('./login');
-let PlantView = require('./plant');
 let ManagerView = require('./manager');
 let HeaderView = require('./header');
 let FooterView = require('./footer');
@@ -326,7 +346,7 @@ module.exports = Backbone.View.extend({
 
 })
 
-},{"./footer":8,"./header":9,"./login":11,"./manager":12,"./plant":13}],11:[function(require,module,exports){
+},{"./footer":8,"./header":9,"./login":11,"./manager":12}],11:[function(require,module,exports){
 // modules
 
 let layoutView = require('./layout');
@@ -419,15 +439,20 @@ module.exports = Backbone.View.extend({
         if (!this.userList._byId.hasOwnProperty(plantId)) {
           this.userList.push(plantObj);
 
+          console.log("plant obj",plantObj);
           //method 1
+
           Backbone.sync("create", plantObj);
+
 
           // method 2
 
+          // let trialObj = plantObj.toJSON;
+          // console.log("trial", trialObj)
           // $.ajax({
           //       url:'http://localhost:8080/manager',
           //       method:'POST',
-          //       data: {id: 1},
+          //       data: trialObj,
           //       success:function(){
           //           console.log('wow');
           //       },
@@ -435,6 +460,10 @@ module.exports = Backbone.View.extend({
           //           console.log('shit');
           //       },
           //     });
+
+
+          // method 3
+          // plantObj.save();
         }
     },
 
@@ -505,5 +534,86 @@ module.exports = Backbone.View.extend({
  })
 
 },{"../model/plant":3,"../model/plant.collection":2,"../model/user.collection":4,"../templates":7,"./layout":10}],13:[function(require,module,exports){
+// modules
 
-},{}]},{},[1])
+let PlantModel = require('../model/plant');
+let PlantCollection = require('../model/plant.collection');
+let UserCollection = require('../model/user.collection');
+let layoutView = require('./layout');
+let tmpl = require('../templates');
+
+/*******************************
+* USER-PLANTS VIEW
+* (plantModel)::
+********************************/
+
+module.exports = Backbone.View.extend({
+
+    url: 'http://localhost:8080/manager/userPlantList',
+
+    initialize() {
+        this.userList = new UserCollection();
+    },
+
+    events: {
+
+    },
+
+    getUserPlantList() {
+      // fetching user plant list from database
+      let self = this;
+
+      console.log(UserCollection)
+      // let userList = self.userList;
+
+      // plantList.fetch({
+      //   url: 'http://localhost:8080/manager/userPlantList',
+      //   success() {
+      //     console.log('grabbing plants', userList);
+      //     self.render(userList.models);
+      //   },
+      //   error(err) {
+      //     console.error('aint no plants to grab', err);
+      //     alert("couldn't find any plants.");
+      //   }
+      //
+      // });
+    },
+
+    render() {
+        // clear and render login to #main
+        this.el.innerHtml = '';
+        let mgr = document.createElement('DIV');
+        mgr.innerHTML = tmpl.manager;
+        this.el.appendChild(mgr);
+        let ul = document.getElementById('plant-list');
+
+        // insert each plant into add list for user to click
+        data.forEach(function(e,i) {
+
+          if (i < 20) {
+              let id = `${e.attributes.id}`;
+              let name = `${e.attributes.plantName}`
+              let node = document.createElement('LI');
+              let twinNode = document.createElement('DIV');
+              twinNode.classList.add('li-drop-down');
+
+              node.setAttribute('data-id', id);
+              node.innerHTML = `${name} <span>+</span>`;
+              twinNode.innerHTML = `
+                <div class="li-detail-wrap">
+                  <span>${e.attributes.species}</span>
+                  <span>every: ${e.attributes.wateringInterval} days</span>
+                  <img src="./assets/plant${id}.jpg" alt="${name}" />
+                  <button id='add-plant' type="button" name="add">add</button>
+                </div>
+              `;
+
+              ul.appendChild(node);
+              ul.appendChild(twinNode);
+          } else {return;}
+      })
+    }
+ })
+
+},{"../model/plant":3,"../model/plant.collection":2,"../model/user.collection":4,"../templates":7,"./layout":10}]},{},[1])
