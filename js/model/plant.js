@@ -16,4 +16,5 @@ module.exports = Backbone.Model.extend({
       nextWateringDate: {},
     },
 
+
 })

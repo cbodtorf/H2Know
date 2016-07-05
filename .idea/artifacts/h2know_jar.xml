@@ -2,7 +2,7 @@
   <artifact type="jar" name="H2Know:jar">
     <output-path>$PROJECT_DIR$/build/classes/artifacts/H2Know_jar</output-path>
     <root id="archive" name="H2Know.jar">
-      <element id="module-output" name="H2Know_main" />
+      <element id="module-output" name="h2know_main" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/4.3.11.Final/536ac0021240d97db99c7d2983067cef1a6f3af5/hibernate-core-4.3.11.Final.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-tomcat/1.3.5.RELEASE/b4c6277ccec38c51716659886efec073c4b386ea/spring-boot-starter-tomcat-1.3.5.RELEASE.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/4.2.6.RELEASE/2ef30e836028ebe4dbba0d8355929625a758ed8d/spring-orm-4.2.6.RELEASE.jar" path-in-jar="/" />
