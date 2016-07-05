@@ -15,14 +15,20 @@ module.exports = Backbone.View.extend({
 
     events: {
       "click .user-plants--span": "userPlants",
+      "click nav"               : "home",
     },
 
     home() {
-
+      console.log('home');
+      location.href = "#manager";
     },
 
     userPlants() {
-      console.log("hellow");
+      if (location.href === "http://localhost:8080/#user") {
+        location.href = '#manager';
+      } else {
+        location.href = "#user"
+      }
     },
 
     render() {

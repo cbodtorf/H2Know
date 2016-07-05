@@ -46,15 +46,20 @@ module.exports = Backbone.View.extend({
         if (!this.userList._byId.hasOwnProperty(plantId)) {
           this.userList.push(plantObj);
 
+          console.log("plant obj",plantObj);
           //method 1
+
           Backbone.sync("create", plantObj);
+
 
           // method 2
 
+          // let trialObj = plantObj.toJSON;
+          // console.log("trial", trialObj)
           // $.ajax({
           //       url:'http://localhost:8080/manager',
           //       method:'POST',
-          //       data: {id: 1},
+          //       data: trialObj,
           //       success:function(){
           //           console.log('wow');
           //       },
@@ -62,6 +67,10 @@ module.exports = Backbone.View.extend({
           //           console.log('shit');
           //       },
           //     });
+
+
+          // method 3
+          // plantObj.save();
         }
     },
 

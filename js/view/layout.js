@@ -1,7 +1,6 @@
 // modules
 
 let LoginView = require('./login');
-let PlantView = require('./plant');
 let ManagerView = require('./manager');
 let HeaderView = require('./header');
 let FooterView = require('./footer');
