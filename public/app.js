@@ -556,6 +556,7 @@ module.exports = Backbone.View.extend({
     },
 
     events: {
+      'click #del-plant': 'deleteFromUserList'
 
     },
 
@@ -578,6 +579,14 @@ module.exports = Backbone.View.extend({
         }
 
       });
+    },
+
+      deleteFromUserList() {
+        //remove user plant join
+        let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
+        let plantObj = this.userList.get(plantId);
+        plantObj.destroy();
+        this.getUserPlantList();
     },
 
     render(data) {
@@ -605,7 +614,7 @@ module.exports = Backbone.View.extend({
                   <span>${e.attributes.species}</span>
                   <span>every: ${e.attributes.wateringInterval} days</span>
                   <img src="./assets/plant${id}.jpg" alt="${name}" />
-                  <button id='add-plant' type="button" name="add">add</button>
+                  <button id='del-plant' type="button" name="delete">delete</button>
                 </div>
               `;
 
