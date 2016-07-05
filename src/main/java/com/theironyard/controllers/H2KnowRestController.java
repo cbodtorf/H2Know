@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -73,7 +72,9 @@ public class H2KnowRestController {
         }
         PlantUserJoin plantJoin = new PlantUserJoin(user, plantToAdd);
         List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
-        plantListThatWasAddedTo.add(plantJoin);
+        if(!plantListThatWasAddedTo.contains(plantJoin)) {
+            plantListThatWasAddedTo.add(plantJoin);
+        }
         users.save(user);
 
         return user;
@@ -93,18 +94,14 @@ public class H2KnowRestController {
         return userPlantList;
     }
 
-    @RequestMapping(path = "/manager", method = RequestMethod.DELETE)
-    public Iterable<PlantUserJoin> listOfPlantsThatWerentDeleted(HttpSession session, Integer id) {
+    @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.DELETE)
+    public Iterable<PlantUserJoin> listOfPlantsThatWerentDeleted(HttpSession session, @RequestBody PlantUserJoin plantUserJoin) {
         String username = (String) session.getAttribute("username");
 
         User user = users.findFirstByUsername(username);
-        Plant plant = plants.findOne(id);
-        PlantUserJoin plantToBeDeleted = pujr.findByUserAndPlant(user, plant);
-        List<PlantUserJoin> plantList = user.getPlantListByUser();
-        plantList.remove(plantToBeDeleted);
+        PlantUserJoin puj = pujr.findOne(plantUserJoin.getId());
+        pujr.delete(puj);
         users.save(user);
-        pujr.delete(plantToBeDeleted);
-
         return user.getPlantListByUser();
     }
 
@@ -112,10 +109,9 @@ public class H2KnowRestController {
     public Iterable<PlantUserJoin> listOfPlantsToBeWatered(HttpSession session, Integer id) {
 
         String username = (String) session.getAttribute("username");
-        Plant plant = plants.findOne(id);
         User user = users.findFirstByUsername(username);
 
-        PlantUserJoin plantToBeUpdated = pujr.findByUserAndPlant(user, plant);
+        PlantUserJoin plantToBeUpdated = pujr.findOne(id);
         plantToBeUpdated.getPlant().setLastWateredOn(LocalDateTime.now());
         plantToBeUpdated.getPlant().setNextWateringDate(LocalDateTime.now().plusDays(Integer.valueOf(plantToBeUpdated.getPlant().getWateringInterval())));
 
@@ -124,7 +120,6 @@ public class H2KnowRestController {
 
         pujr.save(plantToBeUpdated);
         users.save(user);
-
 
         return userPlantList;
     }
