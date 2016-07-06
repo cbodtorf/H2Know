@@ -20,6 +20,7 @@ module.exports = Backbone.View.extend({
     },
 
     events: {
+      'click #del-plant': 'deleteFromUserList'
 
     },
 
@@ -44,9 +45,28 @@ module.exports = Backbone.View.extend({
       });
     },
 
+      deleteFromUserList() {
+        //remove user plant join
+        let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
+        let plantObj = this.userList.get(plantId);
+        
+        plantObj.destroy({
+          url: 'http://localhost:8080/manager/userPlantList',
+          success() {
+            console.log('deleting plant');
+            this.getUserPlantList();
+          },
+          error(err) {
+            console.error("sumthin's wrong: this is what I tried to sent", err);
+            alert("i wrote this alert to be annoying because the delete doesn't work.")
+          }
+        });
+
+    },
+
     render(data) {
         // clear and render login to #main
-        this.el.innerHtml = '';
+        this.el.innerHTML = '';
         let mgr = document.createElement('DIV');
         mgr.innerHTML = tmpl.manager;
         this.el.appendChild(mgr);
@@ -69,7 +89,7 @@ module.exports = Backbone.View.extend({
                   <span>${e.attributes.species}</span>
                   <span>every: ${e.attributes.wateringInterval} days</span>
                   <img src="./assets/plant${id}.jpg" alt="${name}" />
-                  <button id='add-plant' type="button" name="add">add</button>
+                  <button id='del-plant' type="button" name="delete">delete</button>
                 </div>
               `;
 
