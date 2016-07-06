@@ -20,7 +20,7 @@ public class PlantUserJoin {
     public LocalDateTime lastWateredOn;
 
     @JsonIgnore
-    @ManyToOne(cascade = javax.persistence.CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private  User user;
 
 

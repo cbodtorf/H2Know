@@ -8,6 +8,7 @@ import com.theironyard.services.PlantUserJoinRepository;
 import com.theironyard.services.UserRepository;
 import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -92,31 +93,36 @@ public class H2KnowRestController {
                 userPlantList.add(puj.getPlant());
             }
         }
+        users.save(user);
         return userPlantList;
     }
 
-    @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.DELETE)
-    public Iterable<PlantUserJoin> listOfPlantsThatWerentDeleted(HttpSession session, @RequestBody PlantUserJoin plantUserJoin) {
+    @RequestMapping(path = "/manager/userPlantList/{id}", method = RequestMethod.DELETE)
+    public HttpStatus listOfPlantsThatWerentDeleted(HttpSession session, @PathVariable("id") int id) {
         String username = (String) session.getAttribute("username");
 
         User user = users.findFirstByUsername(username);
-        PlantUserJoin puj = pujr.findOne(plantUserJoin.getId());
+        Plant plant = plants.findOne(id);
+        PlantUserJoin puj = pujr.findByUserAndPlant(user, plant);
+        List<PlantUserJoin> userPlantJoinList = user.getPlantListByUser();
+
         pujr.delete(puj);
         users.save(user);
-        return user.getPlantListByUser();
+        return HttpStatus.OK;
     }
 
-    @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.POST)
-    public Iterable<PlantUserJoin> listOfPlantsToBeWatered(HttpSession session, Integer id) {
+    @RequestMapping(path = "/manager/userPlantList{id}", method = RequestMethod.PUT)
+    public Iterable<PlantUserJoin> listOfPlantsToBeWatered(HttpSession session,  @PathVariable("id") int id) {
 
         String username = (String) session.getAttribute("username");
         User user = users.findFirstByUsername(username);
 
-        PlantUserJoin plantToBeUpdated = pujr.findOne(id);
-        plantToBeUpdated.getPlant().setLastWateredOn(LocalDateTime.now());
-        plantToBeUpdated.getPlant().setNextWateringDate(LocalDateTime.now().plusDays(Integer.valueOf(plantToBeUpdated.getPlant().getWateringInterval())));
+        Plant plant = plants.findOne(id);
+        PlantUserJoin plantToBeUpdated = pujr.findByUserAndPlant(user, plant);
 
-        user.getPlantListByUser().add(plantToBeUpdated);
+        plantToBeUpdated.getPlant().setLastWateredOn(LocalDateTime.now());
+        plantToBeUpdated.getPlant().setNextWateringDate(LocalDateTime.now().plusDays(plantToBeUpdated.getPlant().getWateringInterval()));
+
         List<PlantUserJoin> userPlantList = user.getPlantListByUser();
 
         pujr.save(plantToBeUpdated);
