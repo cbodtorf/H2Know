@@ -588,7 +588,7 @@ module.exports = Backbone.View.extend({
         let self = this;
 
         $.ajax({
-              url:`http://localhost:8080/manager/userPlantList/${plantID}`,
+              url:`http://localhost:8080/manager/userPlantList/${plantId}`,
               method:'DELETE',
               success:function(){
                 console.log('deleting plant');
