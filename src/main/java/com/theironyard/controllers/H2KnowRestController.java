@@ -92,18 +92,21 @@ public class H2KnowRestController {
                 userPlantList.add(puj.getPlant());
             }
         }
+        users.save(user);
         return userPlantList;
     }
 
     @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.DELETE)
-    public Iterable<PlantUserJoin> listOfPlantsThatWerentDeleted(HttpSession session, @RequestBody PlantUserJoin plantUserJoin) {
+    public List<PlantUserJoin> listOfPlantsThatWerentDeleted(HttpSession session, @RequestBody PlantUserJoin plantUserJoin) {
         String username = (String) session.getAttribute("username");
 
         User user = users.findFirstByUsername(username);
         PlantUserJoin puj = pujr.findOne(plantUserJoin.getId());
+        List<PlantUserJoin> userPlantJoinList = user.getPlantListByUser();
+
         pujr.delete(puj);
         users.save(user);
-        return user.getPlantListByUser();
+        return userPlantJoinList;
     }
 
     @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.POST)
