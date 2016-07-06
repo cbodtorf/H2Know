@@ -106,6 +106,7 @@ public class H2KnowRestController {
         PlantUserJoin puj = pujr.findByUserAndPlant(user, plant);
         List<PlantUserJoin> userPlantJoinList = user.getPlantListByUser();
 
+        userPlantJoinList.remove(puj);
         pujr.delete(puj);
         users.save(user);
         return HttpStatus.OK;
@@ -122,6 +123,8 @@ public class H2KnowRestController {
 
         plantToBeUpdated.getPlant().setLastWateredOn(LocalDateTime.now());
         plantToBeUpdated.getPlant().setNextWateringDate(LocalDateTime.now().plusDays(plantToBeUpdated.getPlant().getWateringInterval()));
+
+
 
         List<PlantUserJoin> userPlantList = user.getPlantListByUser();
 
