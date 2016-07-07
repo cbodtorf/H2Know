@@ -124,6 +124,8 @@ public class H2KnowRestController {
         plantToBeUpdated.getPlant().setLastWateredOn(LocalDateTime.now());
         plantToBeUpdated.getPlant().setNextWateringDate(LocalDateTime.now().plusDays(plantToBeUpdated.getPlant().getWateringInterval()));
 
+
+
         List<PlantUserJoin> userPlantList = user.getPlantListByUser();
 
         pujr.save(plantToBeUpdated);
