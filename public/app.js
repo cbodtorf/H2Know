@@ -556,7 +556,28 @@ module.exports = Backbone.View.extend({
     },
 
     events: {
-      'click #del-plant': 'deleteFromUserList'
+      'click #del-plant': 'deleteFromUserList',
+      'click #wat-plant': 'waterPlant',
+
+    },
+
+    waterPlant() {
+      let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
+      let plantObj = this.userList.get(plantId);
+      let self = this;
+
+      $.ajax({
+            url:`http://localhost:8080/water/${plantId}`,
+            method:'PUT',
+            success:function(){
+              console.log('watering plant');
+              self.getUserPlantList();
+            },
+            error(err) {
+                console.error("sumthin's wrong: this is what I tried to sent", err);
+                alert("i wrote this alert to be annoying because the watering doesn't work.")
+              }
+          });
 
     },
 
@@ -639,7 +660,10 @@ module.exports = Backbone.View.extend({
                   <span>${e.attributes.species}</span>
                   <span>every: ${e.attributes.wateringInterval} days</span>
                   <img src="./assets/plant${id}.jpg" alt="${name}" />
+                  <span>${e.attributes.nextWateringDate}</span>
+                  <button id='wat-plant' type="button" name="water">Water Me</button>
                   <button id='del-plant' type="button" name="delete">delete</button>
+
                 </div>
               `;
 

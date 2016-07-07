@@ -112,7 +112,7 @@ public class H2KnowRestController {
         return HttpStatus.OK;
     }
 
-    @RequestMapping(path = "/manager/userPlantList{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/water{id}", method = RequestMethod.PUT)
     public Iterable<PlantUserJoin> listOfPlantsToBeWatered(HttpSession session,  @PathVariable("id") int id) {
 
         String username = (String) session.getAttribute("username");
