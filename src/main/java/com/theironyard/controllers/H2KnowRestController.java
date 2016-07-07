@@ -8,6 +8,7 @@ import com.theironyard.services.PlantUserJoinRepository;
 import com.theironyard.services.UserRepository;
 import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -132,6 +133,11 @@ public class H2KnowRestController {
         users.save(user);
 
         return userPlantList;
+    }
+    @RequestMapping(path = "/logout", method = RequestMethod.POST)
+    public HttpStatus logout(HttpSession session) {
+        session.invalidate();
+        return HttpStatus.I_AM_A_TEAPOT; //?
     }
 
 }
