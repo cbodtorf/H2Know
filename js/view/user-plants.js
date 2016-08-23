@@ -49,7 +49,7 @@ module.exports = Backbone.View.extend({
       // fetching user plant list from database
       let self = this;
 
-      console.log(UserCollection)
+      console.log("usr collection", this.userList)
       let userList = self.userList;
 
       userList.fetch({

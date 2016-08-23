@@ -43,14 +43,16 @@ module.exports = Backbone.View.extend({
         //attach gardener id to plant
         let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
         let plantObj = this.plantList.get(plantId);
-        if (!this.userList._byId.hasOwnProperty(plantId)) {
+        console.log("user list b4", this.userList);
+
+        // if (!this.userList._byId.hasOwnProperty(plantId)) {
           this.userList.push(plantObj);
 
           console.log("plant obj",plantObj);
           //method 1
 
           Backbone.sync("create", plantObj);
-
+          console.log("user list aftr", this.userList);
 
           // method 2
 
@@ -71,7 +73,7 @@ module.exports = Backbone.View.extend({
 
           // method 3
           // plantObj.save();
-        }
+
     },
 
 
