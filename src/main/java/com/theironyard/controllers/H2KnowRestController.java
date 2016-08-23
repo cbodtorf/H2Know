@@ -75,6 +75,7 @@ public class H2KnowRestController {
         }
         List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
         PlantUserJoin join = pujr.findByUserAndPlant(user, plant);
+
         if (plantListThatWasAddedTo.contains(join)) {
             return user;
         }
@@ -123,7 +124,7 @@ public class H2KnowRestController {
         return HttpStatus.OK;
     }
 
-    @RequestMapping(path = "/manager/userPlantList{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/water{id}", method = RequestMethod.PUT)
     public Iterable<PlantUserJoin> listOfPlantsToBeWatered(HttpSession session,  @PathVariable("id") int id) {
 
         String username = (String) session.getAttribute("username");

@@ -436,14 +436,16 @@ module.exports = Backbone.View.extend({
         //attach gardener id to plant
         let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
         let plantObj = this.plantList.get(plantId);
-        if (!this.userList._byId.hasOwnProperty(plantId)) {
+        console.log("user list b4", this.userList);
+
+        // if (!this.userList._byId.hasOwnProperty(plantId)) {
           this.userList.push(plantObj);
 
           console.log("plant obj",plantObj);
           //method 1
 
           Backbone.sync("create", plantObj);
-
+          console.log("user list aftr", this.userList);
 
           // method 2
 
@@ -464,7 +466,7 @@ module.exports = Backbone.View.extend({
 
           // method 3
           // plantObj.save();
-        }
+
     },
 
 
@@ -556,7 +558,28 @@ module.exports = Backbone.View.extend({
     },
 
     events: {
-      'click #del-plant': 'deleteFromUserList'
+      'click #del-plant': 'deleteFromUserList',
+      'click #wat-plant': 'waterPlant',
+
+    },
+
+    waterPlant() {
+      let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
+      let plantObj = this.userList.get(plantId);
+      let self = this;
+
+      $.ajax({
+            url:`http://localhost:8080/water/${plantId}`,
+            method:'PUT',
+            success:function(){
+              console.log('watering plant');
+              self.getUserPlantList();
+            },
+            error(err) {
+                console.error("sumthin's wrong: this is what I tried to sent", err);
+                alert("i wrote this alert to be annoying because the watering doesn't work.")
+              }
+          });
 
     },
 
@@ -564,7 +587,7 @@ module.exports = Backbone.View.extend({
       // fetching user plant list from database
       let self = this;
 
-      console.log(UserCollection)
+      console.log("usr collection", this.userList)
       let userList = self.userList;
 
       userList.fetch({
@@ -639,7 +662,10 @@ module.exports = Backbone.View.extend({
                   <span>${e.attributes.species}</span>
                   <span>every: ${e.attributes.wateringInterval} days</span>
                   <img src="./assets/plant${id}.jpg" alt="${name}" />
+                  <span>${e.attributes.nextWateringDate}</span>
+                  <button id='wat-plant' type="button" name="water">Water Me</button>
                   <button id='del-plant' type="button" name="delete">delete</button>
+
                 </div>
               `;
 
