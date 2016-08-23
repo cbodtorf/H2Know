@@ -64,17 +64,23 @@ public class H2KnowRestController {
     @RequestMapping(path = "/manager", method = RequestMethod.POST)
     public User addPlant(HttpSession session, @RequestBody Plant plant) throws Exception {
 
+
         String username = (String) session.getAttribute("username");
         User user = users.findFirstByUsername(username);
+
+        List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
+        PlantUserJoin join = pujr.findByUserAndPlant(user, plant);
+
         plant.setGardener(user);
         plant.setLastWateredOn(LocalDateTime.now());
         Plant plantToAdd = plants.findOne(plant.getId());
+        long millis = ChronoUnit.MILLIS.between(LocalDateTime.now(), LocalDateTime.now().plusDays(plant.getWateringInterval()));
+        plant.setNextWateringDate(millis);
 
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
         }
-        List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
-        PlantUserJoin join = pujr.findByUserAndPlant(user, plant);
+
 
         if (plantListThatWasAddedTo.contains(join)) {
             return user;
