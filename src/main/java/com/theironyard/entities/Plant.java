@@ -27,7 +27,7 @@ public class Plant {
     int wateringInterval;
 
     @Column
-    LocalDateTime nextWateringDate;
+    long nextWateringDate;
 
     @ManyToOne
     User gardener;
@@ -35,7 +35,7 @@ public class Plant {
     public Plant() {
     }
 
-    public Plant(String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate, User gardener) {
+    public Plant(String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, long nextWateringDate, User gardener) {
         this.plantName = plantName;
         this.species = species;
         this.lastWateredOn = lastWateredOn;
@@ -52,7 +52,7 @@ public class Plant {
         this.wateringInterval = wateringInterval;
     }
 
-    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate, User gardener) {
+    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, long nextWateringDate, User gardener) {
         this.id = id;
         this.plantName = plantName;
         this.species = species;
@@ -63,7 +63,7 @@ public class Plant {
     }
 
 
-    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate) {
+    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, long nextWateringDate) {
         this.id = id;
         this.plantName = plantName;
         this.species = species;
@@ -72,12 +72,12 @@ public class Plant {
         this.nextWateringDate = nextWateringDate;
     }
 
-    public Plant(String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate) {
+    public Plant(String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval) {
         this.plantName = plantName;
         this.species = species;
         this.lastWateredOn = lastWateredOn;
         this.wateringInterval = wateringInterval;
-        this.nextWateringDate = nextWateringDate;
+
     }
 
     public int getId() {
@@ -120,13 +120,14 @@ public class Plant {
         this.wateringInterval = wateringInterval;
     }
 
-    public LocalDateTime getNextWateringDate() {
+    public long getNextWateringDate() {
         return nextWateringDate;
     }
 
-    public void setNextWateringDate(LocalDateTime nextWateringDate) {
+    public void setNextWateringDate(long nextWateringDate) {
         this.nextWateringDate = nextWateringDate;
     }
+
     public User getGardener() {
         return gardener;
     }
