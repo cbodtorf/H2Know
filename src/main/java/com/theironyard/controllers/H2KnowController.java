@@ -55,7 +55,7 @@ public class H2KnowController {
             fileScanner.nextLine();
             while (fileScanner.hasNext()) {
                 String[] columns = fileScanner.nextLine().split(",");
-                Plant plant = new Plant(columns[0], columns[1], LocalDateTime.now(), Integer.valueOf(columns[2]), LocalDateTime.now().plusDays(Integer.valueOf(columns[2])));
+                Plant plant = new Plant(columns[0], columns[1], LocalDateTime.now(), Integer.valueOf(columns[2]));
                 plants.save(plant);
 
             }
