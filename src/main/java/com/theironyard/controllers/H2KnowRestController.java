@@ -69,13 +69,14 @@ public class H2KnowRestController {
         User user = users.findFirstByUsername(username);
 
         List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
-        PlantUserJoin join = pujr.findByUserAndPlant(user, plant);
 
-        plant.setGardener(user);
-        plant.setLastWateredOn(LocalDateTime.now());
         Plant plantToAdd = plants.findOne(plant.getId());
+        PlantUserJoin join = pujr.findByUserAndPlant(user, plantToAdd);
+        plantToAdd.setGardener(user);
+        plantToAdd.setLastWateredOn(LocalDateTime.now());
+
         long millis = ChronoUnit.MILLIS.between(LocalDateTime.now(), LocalDateTime.now().plusDays(plant.getWateringInterval()));
-        plant.setNextWateringDate(millis);
+        plantToAdd.setNextWateringDate(millis);
 
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
