@@ -72,11 +72,8 @@ public class H2KnowRestController {
 
         Plant plantToAdd = plants.findOne(plant.getId());
         PlantUserJoin join = pujr.findByUserAndPlant(user, plantToAdd);
-        plantToAdd.setGardener(user);
-        plantToAdd.setLastWateredOn(LocalDateTime.now());
 
-        long millis = ChronoUnit.MILLIS.between(LocalDateTime.now(), LocalDateTime.now().plusDays(plant.getWateringInterval()));
-        plantToAdd.setNextWateringDate(millis);
+        long millis = ChronoUnit.MILLIS.between(LocalDateTime.now(), LocalDateTime.now().plusDays(plantToAdd.getWateringInterval()));
 
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
@@ -90,12 +87,14 @@ public class H2KnowRestController {
 
             PlantUserJoin plantJoin = new PlantUserJoin(user, plantToAdd);
 
-//            if (!plantListThatWasAddedTo.contains(plantJoin)) {
-                plantListThatWasAddedTo.add(plantJoin);
-//            }
+
+            plantToAdd.setNextWateringDate(millis);
+            plantToAdd.setLastWateredOn(LocalDateTime.now());
+            plantListThatWasAddedTo.add(plantJoin);
+            plantJoin.setNextWateringDate(millis);
 
             users.save(user);
-
+            //pujr.save(plantJoin);
             return user;
         }
     }
