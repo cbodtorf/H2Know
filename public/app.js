@@ -438,34 +438,13 @@ module.exports = Backbone.View.extend({
         let plantObj = this.plantList.get(plantId);
         console.log("user list b4", this.userList);
 
-        // if (!this.userList._byId.hasOwnProperty(plantId)) {
+
           this.userList.push(plantObj);
 
           console.log("plant obj",plantObj);
-          //method 1
 
           Backbone.sync("create", plantObj);
           console.log("user list aftr", this.userList);
-
-          // method 2
-
-          // let trialObj = plantObj.toJSON;
-          // console.log("trial", trialObj)
-          // $.ajax({
-          //       url:'http://localhost:8080/manager',
-          //       method:'POST',
-          //       data: trialObj,
-          //       success:function(){
-          //           console.log('wow');
-          //       },
-          //       failure:function(){
-          //           console.log('shit');
-          //       },
-          //     });
-
-
-          // method 3
-          // plantObj.save();
 
     },
 
@@ -605,6 +584,7 @@ module.exports = Backbone.View.extend({
     },
 
       deleteFromUserList() {
+
         //remove user plant join
         let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
         let plantObj = this.userList.get(plantId);
@@ -623,18 +603,6 @@ module.exports = Backbone.View.extend({
                 }
             });
 
-        // plantObj.destroy({
-        //   url: 'http://localhost:8080/manager/userPlantList',
-        //   success() {
-        //     console.log('deleting plant');
-        //     this.getUserPlantList();
-        //   },
-        //   error(err) {
-        //     console.error("sumthin's wrong: this is what I tried to sent", err);
-        //     alert("i wrote this alert to be annoying because the delete doesn't work.")
-        //   }
-        // });
-
     },
 
     render(data) {
@@ -647,6 +615,61 @@ module.exports = Backbone.View.extend({
 
         // insert each plant into add list for user to click
         data.forEach(function(e,i) {
+
+          timer = function(endDate, callback, interval) {
+
+              console.log("postmap", endDate);
+              endDate = new Date(...endDate);
+              interval = interval || 1000;
+              console.log("2 ed", endDate);
+
+              let currentDate = new Date()
+                  , millisecondDiff = endDate.getTime() - currentDate.getTime() // get difference in milliseconds
+                  , timeRemaining = {
+                      days: 0
+                      , hours: 0
+                      , minutes: 0
+                      , seconds: 0
+                  }
+                  ;
+
+              if(millisecondDiff > 0) {
+                  millisecondDiff = Math.floor( millisecondDiff/1000 ); // kill the "milliseconds" so just secs
+
+          		timeRemaining.days = Math.floor( millisecondDiff/86400 ); // days
+          		millisecondDiff = millisecondDiff % 86400;
+
+          		timeRemaining.hours = Math.floor( millisecondDiff/3600 ); // hours
+          		millisecondDiff = millisecondDiff % 3600;
+
+          		timeRemaining.minutes = Math.floor( millisecondDiff/60 ); // minutes
+          		millisecondDiff = millisecondDiff % 60;
+
+          		timeRemaining.seconds = Math.floor(millisecondDiff); // seconds
+
+                  setTimeout(function() {
+                      timer(endDate, callback);
+                  }, interval);
+              }
+
+              callback(timeRemaining);
+          }
+
+          let jsTime = e.attributes.nextWateringDate;
+          jsTime.pop();
+          jsTime = jsTime.map(function(e, i){
+            if (i === 1) {
+              e = e - 1;
+            }
+            return e
+          })
+
+          timer(jsTime, function(timeRemaining) {
+          	console.log('Timer 1:', timeRemaining);
+          });
+
+
+          console.log("nwd", e.attributes.nextWateringDate);
 
           if (i < 20) {
               let id = `${e.attributes.id}`;

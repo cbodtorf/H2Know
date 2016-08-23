@@ -45,34 +45,13 @@ module.exports = Backbone.View.extend({
         let plantObj = this.plantList.get(plantId);
         console.log("user list b4", this.userList);
 
-        // if (!this.userList._byId.hasOwnProperty(plantId)) {
+
           this.userList.push(plantObj);
 
           console.log("plant obj",plantObj);
-          //method 1
 
           Backbone.sync("create", plantObj);
           console.log("user list aftr", this.userList);
-
-          // method 2
-
-          // let trialObj = plantObj.toJSON;
-          // console.log("trial", trialObj)
-          // $.ajax({
-          //       url:'http://localhost:8080/manager',
-          //       method:'POST',
-          //       data: trialObj,
-          //       success:function(){
-          //           console.log('wow');
-          //       },
-          //       failure:function(){
-          //           console.log('shit');
-          //       },
-          //     });
-
-
-          // method 3
-          // plantObj.save();
 
     },
 
