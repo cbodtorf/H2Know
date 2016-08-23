@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,6 @@ public class H2KnowRestController {
         User user = users.findFirstByUsername(username);
         plant.setGardener(user);
         plant.setLastWateredOn(LocalDateTime.now());
-        plant.setNextWateringDate(LocalDateTime.now().plusDays(plant.getWateringInterval()));
         Plant plantToAdd = plants.findOne(plant.getId());
 
         if (username == null) {
@@ -134,7 +134,13 @@ public class H2KnowRestController {
         PlantUserJoin plantToBeUpdated = pujr.findByUserAndPlant(user, plant);
 
         plantToBeUpdated.getPlant().setLastWateredOn(LocalDateTime.now());
-        plantToBeUpdated.getPlant().setNextWateringDate(LocalDateTime.now().plusDays(plantToBeUpdated.getPlant().getWateringInterval()));
+
+
+        long millis = ChronoUnit.MILLIS.between(LocalDateTime.now(), LocalDateTime.now().plusDays(plantToBeUpdated.getPlant().getWateringInterval()));
+
+
+
+        plantToBeUpdated.getPlant().setNextWateringDate(millis);
 
 
 
