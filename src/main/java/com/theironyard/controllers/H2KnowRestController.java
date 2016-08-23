@@ -8,6 +8,7 @@ import com.theironyard.services.PlantUserJoinRepository;
 import com.theironyard.services.UserRepository;
 import com.theironyard.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,16 +73,24 @@ public class H2KnowRestController {
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
         }
-        PlantUserJoin plantJoin = new PlantUserJoin(user, plantToAdd);
         List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
         PlantUserJoin join = pujr.findByUserAndPlant(user, plant);
-        if (!plantListThatWasAddedTo.contains(join)) {
 
-            plantListThatWasAddedTo.add(join);
+        if (plantListThatWasAddedTo.contains(join)) {
+            return user;
         }
-        users.save(user);
+        else {
 
-        return user;
+            PlantUserJoin plantJoin = new PlantUserJoin(user, plantToAdd);
+
+//            if (!plantListThatWasAddedTo.contains(plantJoin)) {
+                plantListThatWasAddedTo.add(plantJoin);
+//            }
+
+            users.save(user);
+
+            return user;
+        }
     }
 
     @RequestMapping(path = "/manager/userPlantList", method = RequestMethod.GET)
@@ -90,6 +99,7 @@ public class H2KnowRestController {
         User user = users.findFirstByUsername(username);
         List<PlantUserJoin> userPlantJoinList = user.getPlantListByUser();
         List<Plant> userPlantList = new ArrayList<>();
+
         for (PlantUserJoin puj : userPlantJoinList) {
             if (puj.getUser() == user) {
                 userPlantList.add(puj.getPlant());
@@ -134,6 +144,11 @@ public class H2KnowRestController {
         users.save(user);
 
         return userPlantList;
+    }
+    @RequestMapping(path = "/logout", method = RequestMethod.POST)
+    public HttpStatus logout(HttpSession session) {
+        session.invalidate();
+        return HttpStatus.I_AM_A_TEAPOT; //?
     }
 
 }
