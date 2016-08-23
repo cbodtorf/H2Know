@@ -75,6 +75,7 @@ public class H2KnowRestController {
         }
         List<PlantUserJoin> plantListThatWasAddedTo = user.getPlantListByUser();
         PlantUserJoin join = pujr.findByUserAndPlant(user, plant);
+
         if (plantListThatWasAddedTo.contains(join)) {
             return user;
         }
