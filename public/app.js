@@ -619,7 +619,7 @@ module.exports = Backbone.View.extend({
           timer = function(endDate, callback, interval) {
 
               console.log("postmap", endDate);
-              endDate = new Date(...endDate);
+              endDate = new Date(endDate);
               interval = interval || 1000;
               console.log("2 ed", endDate);
 
@@ -656,13 +656,13 @@ module.exports = Backbone.View.extend({
           }
 
           let jsTime = e.attributes.nextWateringDate;
-          jsTime.pop();
-          jsTime = jsTime.map(function(e, i){
-            if (i === 1) {
-              e = e - 1;
-            }
-            return e
-          })
+          // jsTime.pop();
+          // jsTime = jsTime.map(function(e, i){
+          //   if (i === 1) {
+          //     e = e - 1;
+          //   }
+          //   return e
+          // })
 
           timer(jsTime, function(timeRemaining) {
           	console.log('Timer 1:', timeRemaining);
