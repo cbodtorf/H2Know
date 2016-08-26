@@ -2,6 +2,7 @@ package com.theironyard.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class Plant {
     int wateringInterval;
 
     @Column
-    long nextWateringDate;
+    LocalDateTime nextWateringDate;
 
     @ManyToOne
     User gardener;
@@ -35,7 +36,7 @@ public class Plant {
     public Plant() {
     }
 
-    public Plant(String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, long nextWateringDate, User gardener) {
+    public Plant(String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate, User gardener) {
         this.plantName = plantName;
         this.species = species;
         this.lastWateredOn = lastWateredOn;
@@ -52,7 +53,7 @@ public class Plant {
         this.wateringInterval = wateringInterval;
     }
 
-    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, long nextWateringDate, User gardener) {
+    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate, User gardener) {
         this.id = id;
         this.plantName = plantName;
         this.species = species;
@@ -63,7 +64,7 @@ public class Plant {
     }
 
 
-    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, long nextWateringDate) {
+    public Plant(int id, String plantName, String species, LocalDateTime lastWateredOn, int wateringInterval, LocalDateTime nextWateringDate) {
         this.id = id;
         this.plantName = plantName;
         this.species = species;
@@ -120,12 +121,14 @@ public class Plant {
         this.wateringInterval = wateringInterval;
     }
 
-    public long getNextWateringDate() {
+    public LocalDateTime getNextWateringDate() {
         return nextWateringDate;
     }
 
-    public void setNextWateringDate(long nextWateringDate) {
+    public LocalDateTime setNextWateringDate(LocalDateTime nextWateringDate) {
         this.nextWateringDate = nextWateringDate;
+
+        return this.getNextWateringDate();
     }
 
     public User getGardener() {
