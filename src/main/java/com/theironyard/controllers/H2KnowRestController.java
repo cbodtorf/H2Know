@@ -149,6 +149,7 @@ public class H2KnowRestController {
 
 
         plantToBeUpdated.setEndDate(millis);
+        plantToBeUpdated.setLastWateredOn(LocalDateTime.now());
 
 
         plantToBeUpdated.getPlant().setNextWateringDate(ldt);
