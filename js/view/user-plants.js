@@ -65,6 +65,21 @@ module.exports = Backbone.View.extend({
 
       });
     },
+    getUserJoinList() {
+      // fetching user join list from database
+      userList.fetch({
+        url: 'http://localhost:8080/manager/userJoins',
+        success(data) {
+          console.log('grabbing user joins no render', data);
+          // self.render(userList.models);
+        },
+        error(err) {
+          console.error('aint no ujl to grab', err);
+          alert("couldn't find any ujl.");
+        }
+
+      });
+    },
 
       deleteFromUserList() {
 
