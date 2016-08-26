@@ -101,7 +101,7 @@ module.exports = Backbone.View.extend({
 
           timer = function(endDate, callback, interval) {
 
-              console.log("postmap", endDate);
+              console.log("js time", endDate);
               endDate = new Date(endDate);
               interval = interval || 1000;
               console.log("2 ed", endDate);
@@ -158,11 +158,12 @@ module.exports = Backbone.View.extend({
               let id = `${e.attributes.id}`;
               let name = `${e.attributes.plantName}`
               let node = document.createElement('LI');
+              node.classList.add('user-plants');
               let twinNode = document.createElement('DIV');
               twinNode.classList.add('li-drop-down');
 
               node.setAttribute('data-id', id);
-              node.innerHTML = `${name} <span>+</span>`;
+              node.innerHTML = `${name} <span>see details</span>`;
               twinNode.innerHTML = `
                 <div class="li-detail-wrap">
                   <span>${e.attributes.species}</span>

@@ -36,7 +36,7 @@ module.exports = Backbone.View.extend({
       this.el.innerHtml = '';
       let plantListHeader = document.createElement('SPAN');
       plantListHeader.classList.add('user-plants--span');
-      plantListHeader.textContent = "- Your Plants -";
+      plantListHeader.textContent = "- Add Plants -";
 
       let hdr = document.createElement('NAV');
       let userPlants = document.createElement('DIV');

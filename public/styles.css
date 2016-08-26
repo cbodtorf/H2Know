@@ -181,3 +181,9 @@ nav {
       border-radius: 5px;
       height: 25px;
       margin-bottom: 4px; }
+
+li.user-plants {
+  background-color: olivedrab;
+  color: white;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white; }

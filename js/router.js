@@ -75,7 +75,7 @@ module.exports = Backbone.Router.extend({
 
       this.layout.header.render();
       this.layout.footer.render();
-      $('.user-plants--span').html('- Add Plants -');
+      $('.user-plants--span').html('- My Plants -');
 
       this.userView.getUserPlantList();
 

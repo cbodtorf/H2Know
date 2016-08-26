@@ -104,7 +104,7 @@ module.exports = Backbone.View.extend({
               twinNode.classList.add('li-drop-down');
 
               node.setAttribute('data-id', id);
-              node.innerHTML = `${name} <span>+</span>`;
+              node.innerHTML = `${name} <span>add +</span>`;
               twinNode.innerHTML = `
                 <div class="li-detail-wrap">
                   <span>${e.attributes.species}</span>
