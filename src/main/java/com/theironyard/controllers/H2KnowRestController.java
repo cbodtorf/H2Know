@@ -12,6 +12,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.DocFlavor;
 import javax.servlet.http.HttpSession;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -113,6 +115,14 @@ public class H2KnowRestController {
         }
         users.save(user);
         return userPlantList;
+    }
+    @RequestMapping(path = "/manager/userJoins", method = RequestMethod.GET)
+    public Iterable<PlantUserJoin> listOfPlantUserJoinsByUser(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        User user = users.findFirstByUsername(username);
+        List<PlantUserJoin> userPlantJoinList = user.getPlantListByUser();
+
+        return userPlantJoinList;
     }
 
     @RequestMapping(path = "/manager/userPlantList/{id}", method = RequestMethod.DELETE)
