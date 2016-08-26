@@ -20,7 +20,7 @@ public class PlantUserJoin {
     public LocalDateTime lastWateredOn;
 
     @Column
-    long nextWateringDate;
+    long endDate;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
@@ -35,12 +35,12 @@ public class PlantUserJoin {
         this.plant = plant;
     }
 
-    public long getNextWateringDate() {
-        return nextWateringDate;
+    public long getEndDate() {
+        return endDate;
     }
 
-    public void setNextWateringDate(long nextWateringDate) {
-        this.nextWateringDate = nextWateringDate;
+    public void setEndDate(long endDate) {
+        this.endDate = endDate;
     }
 
     public PlantUserJoin() {

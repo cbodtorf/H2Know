@@ -13,9 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,8 +77,6 @@ public class H2KnowRestController {
         Plant plantToAdd = plants.findOne(plant.getId());
         PlantUserJoin join = pujr.findByUserAndPlant(user, plantToAdd);
 
-        long millis = ChronoUnit.MILLIS.between(LocalDateTime.now(), LocalDateTime.now().plusDays(plantToAdd.getWateringInterval()));
-
         if (username == null) {
             throw new Exception("You Must be logged in to see this page");
         }
@@ -87,11 +89,9 @@ public class H2KnowRestController {
 
             PlantUserJoin plantJoin = new PlantUserJoin(user, plantToAdd);
 
-
-            plantToAdd.setNextWateringDate(millis);
             plantToAdd.setLastWateredOn(LocalDateTime.now());
             plantListThatWasAddedTo.add(plantJoin);
-            plantJoin.setNextWateringDate(millis);
+
 
             users.save(user);
             //pujr.save(plantJoin);
@@ -140,16 +140,18 @@ public class H2KnowRestController {
         PlantUserJoin plantToBeUpdated = pujr.findByUserAndPlant(user, plant);
 
         plantToBeUpdated.getPlant().setLastWateredOn(LocalDateTime.now());
+        LocalDateTime wateringDate = plantToBeUpdated.getPlant().setNextWateringDate(LocalDateTime.now().plusDays(plant.getWateringInterval()));
+
+        LocalDateTime ldt = plantToBeUpdated.getPlant().setNextWateringDate(LocalDateTime.now().plusDays(plant.getWateringInterval()));
+        Instant instant = ldt.atZone(ZoneId.systemDefault()).toInstant();
+        Date res = Date.from(instant);
+        long millis = res.getTime();
 
 
-        long millis = ChronoUnit.MILLIS.between(LocalDateTime.now(), LocalDateTime.now().plusDays(plantToBeUpdated.getPlant().getWateringInterval()));
+        plantToBeUpdated.setEndDate(millis);
 
 
-
-        plantToBeUpdated.getPlant().setNextWateringDate(millis);
-
-
-
+        plantToBeUpdated.getPlant().setNextWateringDate(ldt);
         List<PlantUserJoin> userPlantList = user.getPlantListByUser();
 
         pujr.save(plantToBeUpdated);
