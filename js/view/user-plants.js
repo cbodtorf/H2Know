@@ -31,7 +31,7 @@ module.exports = Backbone.View.extend({
       let self = this;
 
       $.ajax({
-            url:`http://localhost:8080/water/${plantId}`,
+            url:`http://localhost:8080/water${plantId}`,
             method:'PUT',
             success:function(){
               console.log('watering plant');
@@ -152,7 +152,7 @@ module.exports = Backbone.View.extend({
           });
 
 
-          console.log("nwd", e.attributes.nextWateringDate);
+          console.log("nwd // ed", e.attributes.nextWateringDate, e.attributes.endDate);
 
           if (i < 20) {
               let id = `${e.attributes.id}`;
