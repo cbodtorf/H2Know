@@ -1,12 +1,13 @@
 // modules
 
-let PlantModel = require('./model/plant');
-let LayoutView = require('./view/layout');
-let LoginView = require('./view/login');
-let ManagerView = require('./view/manager');
-let PlantCollection = require('./model/plant.collection');
-let UserModel = require('./model/user');
-let UserPlantView = require('./view/user-plants')
+var PlantModel = require('./model/plant');
+var LayoutView = require('./view/layout');
+var LoginView = require('./view/login');
+var UJLModel = require('./model/ujl');
+var ManagerView = require('./view/manager');
+var PlantCollection = require('./model/plant.collection');
+var UserModel = require('./model/user');
+var UserPlantView = require('./view/user-plants')
 
 /*******************************
 * ROUTER
@@ -17,7 +18,7 @@ module.exports = Backbone.Router.extend({
 
 
   initialize() {
-      let userM = new UserModel();
+      var userM = new UserModel();
 
       this.login = new LoginView({
         model: userM,
@@ -47,7 +48,7 @@ module.exports = Backbone.Router.extend({
 
   /*******************************
     * ROUTE events show/hide VIEWS
-    ********************************/
+    *********var***********************/
 
     login() {
       this.layout.header.el.innerHTML = '';

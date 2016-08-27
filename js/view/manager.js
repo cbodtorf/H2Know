@@ -1,10 +1,11 @@
 // modules
 
-let layoutView = require('./layout');
-let PlantModel = require('../model/plant');
-let tmpl = require('../templates');
-let PlantCollection = require('../model/plant.collection');
-let UserCollection = require('../model/user.collection');
+var layoutView = require('./layout');
+var PlantModel = require('../model/plant');
+var tmpl = require('../templates');
+var UJLModel = require('../model/ujl');
+var PlantCollection = require('../model/plant.collection');
+var UserCollection = require('../model/user.collection');
 
 /*******************************
 * MANAGER VIEW
@@ -41,8 +42,8 @@ module.exports = Backbone.View.extend({
 
     addToUserList() {
         //attach gardener id to plant
-        let plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
-        let plantObj = this.plantList.get(plantId);
+        var plantId = event.target.parentElement.parentElement.previousSibling.getAttribute('data-id');
+        var plantObj = this.plantList.get(plantId);
         console.log("user list b4", this.userList);
 
 
@@ -61,8 +62,8 @@ module.exports = Backbone.View.extend({
     ********************************/
     getPlantList() {
         // fetching from database
-        let self = this;
-        let plantList = self.plantList;
+        var self = this;
+        var plantList = self.plantList;
 
         plantList.fetch({
           url: 'http://localhost:8080/manager',
@@ -88,19 +89,19 @@ module.exports = Backbone.View.extend({
 
         // clear and render login to #main
         this.el.innerHtml = '';
-        let mgr = document.createElement('DIV');
+        var mgr = document.createElement('DIV');
         mgr.innerHTML = tmpl.manager;
         this.el.appendChild(mgr);
-        let ul = document.getElementById('plant-list');
+        var ul = document.getElementById('plant-list');
 
         // insert each plant into add list for user to click
         data.forEach(function(e,i) {
 
           if (i < 20) {
-              let id = `${e.attributes.id}`;
-              let name = `${e.attributes.plantName}`
-              let node = document.createElement('LI');
-              let twinNode = document.createElement('DIV');
+              var id = `${e.attributes.id}`;
+              var name = `${e.attributes.plantName}`
+              var node = document.createElement('LI');
+              var twinNode = document.createElement('DIV');
               twinNode.classList.add('li-drop-down');
 
               node.setAttribute('data-id', id);

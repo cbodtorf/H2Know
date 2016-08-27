@@ -1,7 +1,7 @@
 // modules
 
-let layoutView = require('./layout');
-let tmpl = require('../templates');
+var layoutView = require('./layout');
+var tmpl = require('../templates');
 
 /*******************************
 * LOGIN
@@ -18,8 +18,8 @@ module.exports = Backbone.View.extend({
     },
 
     login() {
-      let un = document.getElementById('username');
-      let pw = document.getElementById('password');
+      var un = document.getElementById('username');
+      var pw = document.getElementById('password');
       if (un.value === '' || pw.value === '') {
           un.placeholder = 'something\'s not right';
       } else {
@@ -33,7 +33,7 @@ module.exports = Backbone.View.extend({
     render() {
       // clear and render login to #main
       this.el.innerHtml = '';
-      let login = document.createElement('DIV');
+      var login = document.createElement('DIV');
       login.innerHTML = tmpl.login;
       this.el.appendChild(login);
 
