@@ -1,9 +1,9 @@
 // modules
 
-let LoginView = require('./login');
-let ManagerView = require('./manager');
-let HeaderView = require('./header');
-let FooterView = require('./footer');
+var LoginView = require('./login');
+var ManagerView = require('./manager');
+var HeaderView = require('./header');
+var FooterView = require('./footer');
 
 /*******************************
 * LAYOUT

@@ -23,7 +23,7 @@ module.exports = Backbone.Model.extend({
             location.href = '#manager';
           },
           error() {
-            let err = document.getElementById('password');
+            var err = document.getElementById('password');
             err.placeholder = 'wrong password';
             console.log('you suck try again, wrong password');
           }

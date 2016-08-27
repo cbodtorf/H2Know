@@ -1,7 +1,7 @@
 // modules
 
-let layoutView = require('./layout');
-let tmpl = require('../templates');
+var layoutView = require('./layout');
+var tmpl = require('../templates');
 
 /*******************************
 * HEADER
@@ -34,12 +34,12 @@ module.exports = Backbone.View.extend({
     render() {
       // clear and render login to #main
       this.el.innerHtml = '';
-      let plantListHeader = document.createElement('SPAN');
+      var plantListHeader = document.createElement('SPAN');
       plantListHeader.classList.add('user-plants--span');
-      plantListHeader.textContent = "- Your Plants -";
+      plantListHeader.textContent = "- Add Plants -";
 
-      let hdr = document.createElement('NAV');
-      let userPlants = document.createElement('DIV');
+      var hdr = document.createElement('NAV');
+      var userPlants = document.createElement('DIV');
       userPlants.classList.add('user-plants--header');
       this.el.appendChild(userPlants);
       hdr.innerHTML = tmpl.header;
