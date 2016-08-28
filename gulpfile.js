@@ -1,7 +1,7 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var babel = require('gulp-babel');
-var browserify = require('gulp-browserify');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const babel = require('gulp-babel');
+const browserify = require('gulp-browserify');
 
 // Default runner
 gulp.task('default', ['html','css','js']);
@@ -18,11 +18,11 @@ gulp.task('css', function() {
 });
 
 gulp.task('js', function() {
-  gulp.src('./js/app.js')
-  .pipe(babel({
-			presets: ['es2015']
-		}))
+  return gulp.src('./js/app.js')
   .pipe(browserify())
+  .pipe(babel({
+            presets: ['es2015']
+        }))
   .pipe(gulp.dest('./public'));
 });
 

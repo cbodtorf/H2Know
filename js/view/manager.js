@@ -34,7 +34,7 @@ module.exports = Backbone.View.extend({
     },
 
     dropDown() {
-        userPlant = event.target.nextSibling;
+        var userPlant = event.target.nextSibling;
         $(userPlant).slideToggle('slow', function(){
         });
 

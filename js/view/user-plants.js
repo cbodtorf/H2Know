@@ -2,10 +2,12 @@
 
 var PlantModel = require('../model/plant');
 var UJLModel = require('../model/ujl');
+var UJLCollection = require('../model/ujl.collection')
 var PlantCollection = require('../model/plant.collection');
 var UserCollection = require('../model/user.collection');
 var layoutView = require('./layout');
 var tmpl = require('../templates');
+
 
 /*******************************
 * USER-PLANTS VIEW
@@ -18,7 +20,8 @@ module.exports = Backbone.View.extend({
 
     initialize() {
         this.userList = new UserCollection();
-        this.ujList = new UJLModel();
+        this.ujlCollection = new UJLCollection();
+        // this.ujList = new UJLModel();
     },
 
     model: this.ujList,
@@ -55,27 +58,45 @@ module.exports = Backbone.View.extend({
 
       console.log("usr collection", this.userList)
       var userList = self.userList;
-      var ujList = self.ujList;
+      var ujList = self.ujlCollection;
+      var       timer = function(endDate, callback, interval) {
 
-      ujList.fetch({
-        url: 'http://localhost:8080/manager/userJoins',
-        success() {
-          console.log("ujl", ujList);
-          var jsTime = ujList.attributes[0].endDate;
+                // console.log("js time", endDate);
+                endDate = new Date(endDate);
+                interval = interval || 1000;
+                // console.log("2 ed", endDate);
 
+                var currentDate = new Date()
+                    , millisecondDiff = endDate.getTime() - currentDate.getTime() // get difference in milliseconds
+                    , timeRemaining = {
+                        days: 0
+                        , hours: 0
+                        , minutes: 0
+                        , seconds: 0
+                    }
+                    ;
 
-          timer(jsTime, function(timeRemaining) {
-            // console.log('Timer 1:', timeRemaining);
-            self.renderTimer(timeRemaining)
-          });
+                if(millisecondDiff > 0) {
+                    millisecondDiff = Math.floor( millisecondDiff/1000 ); // kill the "milliseconds" so just secs
 
-        },
-        error(err) {
-          console.error('aint no ujlist', err);
-          alert("couldn't find any ujl.");
-        }
+                timeRemaining.days = Math.floor( millisecondDiff/86400 ); // days
+                millisecondDiff = millisecondDiff % 86400;
 
-      });
+                timeRemaining.hours = Math.floor( millisecondDiff/3600 ); // hours
+                millisecondDiff = millisecondDiff % 3600;
+
+                timeRemaining.minutes = Math.floor( millisecondDiff/60 ); // minutes
+                millisecondDiff = millisecondDiff % 60;
+
+                timeRemaining.seconds = Math.floor(millisecondDiff); // seconds
+
+                    setTimeout(function() {
+                        timer(endDate, callback);
+                    }, interval);
+                }
+
+                callback(timeRemaining);
+            }
 
       userList.fetch({
         url: 'http://localhost:8080/manager/userPlantList',
@@ -90,44 +111,29 @@ module.exports = Backbone.View.extend({
 
       });
 
-      timer = function(endDate, callback, interval) {
+      ujList.fetch({
+        url: 'http://localhost:8080/manager/userJoins',
+        success() {
+          console.log("ujl", ujList);
+            ujList.models.forEach(function(e,i) {
+              console.log(e.attributes.endDate);
 
-          // console.log("js time", endDate);
-          endDate = new Date(endDate);
-          interval = interval || 1000;
-          // console.log("2 ed", endDate);
+              var jsTime = e.attributes.endDate;
 
-          var currentDate = new Date()
-              , millisecondDiff = endDate.getTime() - currentDate.getTime() // get difference in milliseconds
-              , timeRemaining = {
-                  days: 0
-                  , hours: 0
-                  , minutes: 0
-                  , seconds: 0
-              }
-              ;
 
-          if(millisecondDiff > 0) {
-              millisecondDiff = Math.floor( millisecondDiff/1000 ); // kill the "milliseconds" so just secs
+              timer(jsTime, function(timeRemaining) {
+                // console.log('Timer 1:', timeRemaining);
+                self.renderTimer(timeRemaining, i)
+              });
+            })
 
-          timeRemaining.days = Math.floor( millisecondDiff/86400 ); // days
-          millisecondDiff = millisecondDiff % 86400;
+        },
+        error(err) {
+          console.error('aint no ujlist', err);
+          alert("couldn't find any ujl.");
+        }
 
-          timeRemaining.hours = Math.floor( millisecondDiff/3600 ); // hours
-          millisecondDiff = millisecondDiff % 3600;
-
-          timeRemaining.minutes = Math.floor( millisecondDiff/60 ); // minutes
-          millisecondDiff = millisecondDiff % 60;
-
-          timeRemaining.seconds = Math.floor(millisecondDiff); // seconds
-
-              setTimeout(function() {
-                  timer(endDate, callback);
-              }, interval);
-          }
-
-          callback(timeRemaining);
-      }
+      });
 
 
     },
@@ -200,12 +206,12 @@ module.exports = Backbone.View.extend({
       })
     },
 
-    renderTimer(tttimer) {
-      var timer = Array.from(document.querySelectorAll('.timer'));
+    renderTimer(tttimer, i) {
 
-      timer.forEach(function(e,i){
-        e.innerHTML = `next watering in: <br> ${tttimer.days}days  ${tttimer.hours}hrs ${tttimer.minutes}mins ${tttimer.seconds}secs`
-      })
+      var timer = Array.from(document.querySelectorAll('.timer'));
+      timer = timer[i];
+
+      timer.innerHTML = `next watering in: <br> ${tttimer.days}days  ${tttimer.hours}hrs ${tttimer.minutes}mins ${tttimer.seconds}secs`
 
     }
  })
